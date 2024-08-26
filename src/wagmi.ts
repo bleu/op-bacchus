@@ -1,5 +1,5 @@
 import { http, cookieStorage, createConfig, createStorage } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet, optimism, sepolia } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 // import {metaMask} from "wagmi/connectors"
 
@@ -13,20 +13,20 @@ const MetaMaskOptions = {
 
 export function getConfig() {
   return createConfig({
-    chains: [mainnet, sepolia],
+    chains: [optimism],
     connectors: [
       injected(),
       coinbaseWallet(),
       // walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID }),
-      // metaMask(MetaMaskOptions)
     ],
     storage: createStorage({
       storage: cookieStorage,
     }),
     ssr: true,
     transports: {
-      [mainnet.id]: http(),
-      [sepolia.id]: http(),
+      // [mainnet.id]: http(),
+      // [sepolia.id]: http(),
+      [optimism.id]: http(),
     },
   });
 }
