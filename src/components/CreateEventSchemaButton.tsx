@@ -1,17 +1,5 @@
 import { useRegistrySchema } from "@/hooks/useRegistrySchema";
 import { zeroAddress } from "viem";
-import styled from "styled-components"
-
-const Button = styled.button`
-    padding: 0.5rem 1rem;
-    background-color: gray;
-    margin-right:1rem;
-    border-radius:10px;
-
-    &:hover {
-        background-color: #4a4a4a;
-    }
-`
 
 // const today = new Date();
 // const tomorrow = new Date();
@@ -34,7 +22,6 @@ export function CreateEventSchemaButton() {
     const registrySchema = useRegistrySchema();
 
     async function handleCreateEventSchema() {
-
         registrySchema({
             schema:CREATE_EVENT_SCHEMA,
             resolver:zeroAddress,
@@ -43,8 +30,11 @@ export function CreateEventSchemaButton() {
     }
 
     return (
-        <Button onClick={handleCreateEventSchema}>
+        <button 
+            className="bg-white hover:bg-gray-300 text-gray-800 font-semibold mr-4 py-2 px-4 border border-gray-400 rounded-lg shadow"
+            onClick={handleCreateEventSchema}
+            >
             Create Event Schema
-        </Button>
+        </button>
     )
 }

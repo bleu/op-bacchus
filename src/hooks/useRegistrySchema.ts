@@ -2,18 +2,19 @@ import { useSigner } from "@/hooks/useSigner";
 import { encodePacked, keccak256, zeroAddress } from "viem";
 import { EAS, SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
+import type {Address} from "viem"
 
 interface RegistrySchemaParms {
     schema: string,
-    resolver:`0x${string}`,
+    resolver:Address,
     revocable:boolean,
 };
 
 export const useRegistrySchema = () => {
 
-    // Optimism Sepolia Version 1.0.2
-    const EAS_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000021" //Deployment and ABI: EAS.json
-    const SCHEMA_REGISTRY_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000020" //Deployment and ABI: SchemaRegistry.json
+    // Addresses only valid for Optimism Sepolia
+    const EAS_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000021"
+    const SCHEMA_REGISTRY_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000020"
 
     const [schemaRegistry, setSchemaRegistry] = useState<SchemaRegistry | null>(null);
     const [eas, setEas] = useState<EAS | null>(null);

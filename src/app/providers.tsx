@@ -9,18 +9,12 @@ import { Provider } from "urql";
 import { client } from "../lib/urql-client";
 
 import '@rainbow-me/rainbowkit/styles.css';
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-  type Locale,
-} from '@rainbow-me/rainbowkit';
-import { useRouter } from 'next/router';
+import { RainbowKitProvider} from '@rainbow-me/rainbowkit';
 
 export function Providers(props: {
   children: ReactNode;
   initialState?: State;
 }) {
-  // const {locale} = useRouter() as {locale:Locale}
   const [config] = useState(() => getConfig());
   const [queryClient] = useState(() => new QueryClient());
 
