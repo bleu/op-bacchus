@@ -3,6 +3,7 @@ import { encodePacked, keccak256, zeroAddress } from "viem";
 import { EAS, SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
 import type {Address} from "viem"
+import { CREATE_EVENT_SCHEMA_UID } from "@/components/CreateEventSchemaButton";
 
 interface RegistrySchemaParms {
     schema: string,
@@ -42,20 +43,14 @@ export const useRegistrySchema = () => {
 
             `)
 
-            const SCHEMA_UID = keccak256(
-                encodePacked(
-                    ["string", "address", "bool"],
-                    [schema, resolver, revocable],
-                ),
-            );
-            console.log('Schema UID:',SCHEMA_UID)
+            console.log('Schema UID:',CREATE_EVENT_SCHEMA_UID)
 
             const isAbleToOperateSchema = (signer && schemaRegistry)
             console.log('isAbleToOperateSchema',isAbleToOperateSchema);
 
             if (isAbleToOperateSchema) {
                 try {
-                    await schemaRegistry.getSchema({ uid: SCHEMA_UID });
+                    await schemaRegistry.getSchema({ uid: CREATE_EVENT_SCHEMA_UID });
                     console.log('No errors getting schema');
                 } catch (e) {
                 // If schemas don't exist, create them
