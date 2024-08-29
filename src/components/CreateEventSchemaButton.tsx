@@ -1,20 +1,6 @@
 import { useRegistrySchema } from "@/hooks/useRegistrySchema";
 import { zeroAddress } from "viem";
 
-// const today = new Date();
-// const tomorrow = new Date();
-// tomorrow.setDate(today.getDate()+1);
-// const newEvent = {
-//     owner:"0xa90914762709441d557De208bAcE1edB1A3968b2",
-//     name:"test",
-//     briefDescription:"test description",
-//     fullDescription:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, numquam! Esse officia molestiae illum nihil dolorum rem debitis laborum ab. Quaerat voluptatibus repellendus deserunt porro distinctio laboriosam earum nesciunt laborum?",
-//     startsAt: today.valueOf(),
-//     endsAt: tomorrow.valueOf(),
-//     imageUrl:"https://picsum.photos/id/237/200/300",
-// } as EventSchema
-// console.log('newEvent', newEvent)
-
 const CREATE_EVENT_SCHEMA =
     "string name, string briefDescription, string fullDescription, uint256 startsAt, uint256 endsAt, string imageUrl"
 
