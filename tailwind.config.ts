@@ -15,6 +15,7 @@ const config: Config = {
       },
       width: {
         '1150px':'1150px',
+        '1000px':'1000px',
         '500px':'500px',
       },
       height: {
