@@ -1,5 +1,3 @@
 export function Confirm() {
-    return (
-        <>Confirm</>
-    )
+	return <>Confirm</>;
 }

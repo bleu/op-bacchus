@@ -8,25 +8,23 @@ import { getConfig } from "@/wagmi";
 import { Provider } from "urql";
 import { client } from "../lib/urql-client";
 
-import '@rainbow-me/rainbowkit/styles.css';
-import { RainbowKitProvider} from '@rainbow-me/rainbowkit';
+import "@rainbow-me/rainbowkit/styles.css";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 export function Providers(props: {
-  children: ReactNode;
-  initialState?: State;
+	children: ReactNode;
+	initialState?: State;
 }) {
-  const [config] = useState(() => getConfig());
-  const [queryClient] = useState(() => new QueryClient());
+	const [config] = useState(() => getConfig());
+	const [queryClient] = useState(() => new QueryClient());
 
-  return (
-    <WagmiProvider config={config} initialState={props.initialState}>
-      <Provider value={client}>
-          <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider>
-            {props.children}
-            </RainbowKitProvider>
-          </QueryClientProvider>
-      </Provider>
-    </WagmiProvider>
-  );
+	return (
+		<WagmiProvider config={config} initialState={props.initialState}>
+			<Provider value={client}>
+				<QueryClientProvider client={queryClient}>
+					<RainbowKitProvider>{props.children}</RainbowKitProvider>
+				</QueryClientProvider>
+			</Provider>
+		</WagmiProvider>
+	);
 }
