@@ -407,24 +407,24 @@ export type AttestationOrderByWithRelationInput = {
   txid?: InputMaybe<SortOrder>;
 };
 
-export type AttestationScalarFieldEnum =
-  | 'attester'
-  | 'data'
-  | 'decodedDataJson'
-  | 'expirationTime'
-  | 'id'
-  | 'ipfsHash'
-  | 'isOffchain'
-  | 'recipient'
-  | 'refUID'
-  | 'revocable'
-  | 'revocationTime'
-  | 'revoked'
-  | 'schemaId'
-  | 'time'
-  | 'timeCreated'
-  | 'txid'
-  | '%future added value';
+export enum AttestationScalarFieldEnum {
+  Attester = 'attester',
+  Data = 'data',
+  DecodedDataJson = 'decodedDataJson',
+  ExpirationTime = 'expirationTime',
+  Id = 'id',
+  IpfsHash = 'ipfsHash',
+  IsOffchain = 'isOffchain',
+  Recipient = 'recipient',
+  RefUid = 'refUID',
+  Revocable = 'revocable',
+  RevocationTime = 'revocationTime',
+  Revoked = 'revoked',
+  SchemaId = 'schemaId',
+  Time = 'time',
+  TimeCreated = 'timeCreated',
+  Txid = 'txid'
+}
 
 export type AttestationScalarWhereInput = {
   AND?: InputMaybe<Array<AttestationScalarWhereInput>>;
@@ -711,11 +711,11 @@ export type EnsNameOrderByWithRelationInput = {
   timestamp?: InputMaybe<SortOrder>;
 };
 
-export type EnsNameScalarFieldEnum =
-  | 'id'
-  | 'name'
-  | 'timestamp'
-  | '%future added value';
+export enum EnsNameScalarFieldEnum {
+  Id = 'id',
+  Name = 'name',
+  Timestamp = 'timestamp'
+}
 
 export type EnsNameScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<EnsNameScalarWhereWithAggregatesInput>>;
@@ -1331,13 +1331,13 @@ export type OffchainRevocationOrderByWithRelationInput = {
   uid?: InputMaybe<SortOrder>;
 };
 
-export type OffchainRevocationScalarFieldEnum =
-  | 'from'
-  | 'id'
-  | 'timestamp'
-  | 'txid'
-  | 'uid'
-  | '%future added value';
+export enum OffchainRevocationScalarFieldEnum {
+  From = 'from',
+  Id = 'id',
+  Timestamp = 'timestamp',
+  Txid = 'txid',
+  Uid = 'uid'
+}
 
 export type OffchainRevocationScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<OffchainRevocationScalarWhereWithAggregatesInput>>;
@@ -1856,10 +1856,10 @@ export type QueryTimestampsArgs = {
   where?: InputMaybe<TimestampWhereInput>;
 };
 
-export type QueryMode =
-  | 'default'
-  | 'insensitive'
-  | '%future added value';
+export enum QueryMode {
+  Default = 'default',
+  Insensitive = 'insensitive'
+}
 
 export type Schema = {
   __typename?: 'Schema';
@@ -2246,14 +2246,14 @@ export type SchemaNameOrderByWithRelationInput = {
   time?: InputMaybe<SortOrder>;
 };
 
-export type SchemaNameScalarFieldEnum =
-  | 'attesterAddress'
-  | 'id'
-  | 'isCreator'
-  | 'name'
-  | 'schemaId'
-  | 'time'
-  | '%future added value';
+export enum SchemaNameScalarFieldEnum {
+  AttesterAddress = 'attesterAddress',
+  Id = 'id',
+  IsCreator = 'isCreator',
+  Name = 'name',
+  SchemaId = 'schemaId',
+  Time = 'time'
+}
 
 export type SchemaNameScalarWhereInput = {
   AND?: InputMaybe<Array<SchemaNameScalarWhereInput>>;
@@ -2394,16 +2394,16 @@ export type SchemaRelationFilter = {
   isNot?: InputMaybe<SchemaWhereInput>;
 };
 
-export type SchemaScalarFieldEnum =
-  | 'creator'
-  | 'id'
-  | 'index'
-  | 'resolver'
-  | 'revocable'
-  | 'schema'
-  | 'time'
-  | 'txid'
-  | '%future added value';
+export enum SchemaScalarFieldEnum {
+  Creator = 'creator',
+  Id = 'id',
+  Index = 'index',
+  Resolver = 'resolver',
+  Revocable = 'revocable',
+  Schema = 'schema',
+  Time = 'time',
+  Txid = 'txid'
+}
 
 export type SchemaScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<SchemaScalarWhereWithAggregatesInput>>;
@@ -2594,10 +2594,10 @@ export type ServiceStatOrderByWithRelationInput = {
   value?: InputMaybe<SortOrder>;
 };
 
-export type ServiceStatScalarFieldEnum =
-  | 'name'
-  | 'value'
-  | '%future added value';
+export enum ServiceStatScalarFieldEnum {
+  Name = 'name',
+  Value = 'value'
+}
 
 export type ServiceStatScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<ServiceStatScalarWhereWithAggregatesInput>>;
@@ -2629,10 +2629,10 @@ export type ServiceStatWhereUniqueInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type SortOrder =
-  | 'asc'
-  | 'desc'
-  | '%future added value';
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc'
+}
 
 export type StringFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['String']['input']>;
@@ -2792,13 +2792,13 @@ export type TimestampOrderByWithRelationInput = {
   txid?: InputMaybe<SortOrder>;
 };
 
-export type TimestampScalarFieldEnum =
-  | 'from'
-  | 'id'
-  | 'timestamp'
-  | 'tree'
-  | 'txid'
-  | '%future added value';
+export enum TimestampScalarFieldEnum {
+  From = 'from',
+  Id = 'id',
+  Timestamp = 'timestamp',
+  Tree = 'tree',
+  Txid = 'txid'
+}
 
 export type TimestampScalarWhereWithAggregatesInput = {
   AND?: InputMaybe<Array<TimestampScalarWhereWithAggregatesInput>>;
