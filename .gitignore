@@ -3,6 +3,7 @@
 # dependencies
 /package/gql/node_modules
 /node_modules
+package/gql/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
