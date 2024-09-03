@@ -1,4 +1,4 @@
-import { AttestionList } from "@/components/AttestionList";
+import { AttestationList } from "@/components/AttestionList";
 
 export default function Home() {
   return (
