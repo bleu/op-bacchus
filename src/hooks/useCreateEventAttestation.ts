@@ -1,5 +1,5 @@
 import { useSigner } from "@/hooks/useSigner";
-import { encodePacked, keccak256, zeroAddress } from "viem";
+import { zeroAddress } from "viem";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
 import type { Address } from "viem";
@@ -23,7 +23,6 @@ export const CREATE_EVENT_SCHEMA_ENCODER = new SchemaEncoder(
 );
 
 export const useCreateEventAttestation = () => {
-  // Address only valid for Optimism Sepolia
   const EAS_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000021";
 
   const signer = useSigner();
@@ -39,11 +38,6 @@ export const useCreateEventAttestation = () => {
 
   const createEventAttestation = useCallback(
     async ({ event }: { event: Event }) => {
-      console.log(`
-            Called createEventAttestation
-            event: ${event}
-            `);
-
       if (!eas) throw new Error("EAS not initialized");
       const encodedData = CREATE_EVENT_SCHEMA_ENCODER.encodeData([
         {
@@ -82,7 +76,6 @@ export const useCreateEventAttestation = () => {
           type: "string",
         },
       ]);
-      console.log("Start Attestation");
       const tx = await eas.attest({
         schema: CREATE_EVENT_SCHEMA_UID,
         data: {
