@@ -9,8 +9,18 @@ import { optimismSepolia, sepolia } from "viem/chains";
 import { useChainId } from "wagmi";
 import { useMemo } from "react";
 
+interface AttestationData {
+  attestations: Array<{
+    id: string;
+    decodedDataJson: string;
+  }>;
+}
+
 export function AttestationList() {
   const signer = useSigner();
+  // const [attestationData, setAttestationData] = useState<AttestationData>({
+  //   attestations: [],
+  // } as AttestationData);
 
   const chainId = useChainId();
 
@@ -42,16 +52,23 @@ export function AttestationList() {
     return <div>Loading attestation data...</div>;
   }
 
+  console.log(attestationData);
   return (
     <>
       <h2>Attestations</h2>
       <div>{attestationList}</div>
+      {/* <div>
+        {attestationData.attestations.map((data: any) => (
+          <AttestationItem key={data.id} data={data.decodedDataJson} />
+        ))}
+      </div> */}
     </>
   );
 }
 
 function AttestationItem({ data }: { data: any }) {
   const parsedData = parseData(data);
+  console.log(parsedData);
 
   return (
     <div>
