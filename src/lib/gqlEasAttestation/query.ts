@@ -1,7 +1,7 @@
-import { gql } from "graphql-tag";
+import { graphql } from "gql.tada";
 
-export const veBalGetVotingList = gql`
-  query getAttestationsByAttester($attester: String!) {
+export const USER_ATTESTATIONS_QUERY = graphql(`
+ query getAttestationsByAttester($attester: String!) {
   attestations(
     where: { attester: {equals: $attester} }
   ) {
@@ -16,4 +16,4 @@ export const veBalGetVotingList = gql`
     decodedDataJson
   }
 }
-`;
+`);

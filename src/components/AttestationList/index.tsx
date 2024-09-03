@@ -1,8 +1,10 @@
 "use client";
+import request from "graphql-request";
 import { useState, useEffect } from "react";
 import { useSigner } from "@/hooks/useSigner";
 import { parseData } from "./utils";
-import { attestationsApi } from "@/lib/gqlEasAttestation/sdk";
+import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import { NEXT_PUBLIC_API_URL } from "@/lib/gqlEasAttestation";
 
 interface AttestationData {
   attestations: Array<{
@@ -20,7 +22,7 @@ export function AttestationList() {
   useEffect(() => {
     async function fetchAttestationData() {
       if (signer) {
-        const data = await attestationsApi.getAttestationsByAttester({
+        const data:AttestationData = await request(NEXT_PUBLIC_API_URL, USER_ATTESTATIONS_QUERY, {
           attester: signer.address,
         });
         setAttestationData(data);

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-   "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-contracts": "^1.7.1",
@@ -17,6 +17,7 @@
     "@tanstack/react-query": "^5.52.1",
     "class-variance-authority": "^0.7.0",
     "ethers": "^6.13.2",
+    "gql.tada": "^1.8.6",
     "graphql": "^16.9.0",
     "graphql-request": "6.1.0",
     "lucide-react": "^0.436.0",
@@ -31,11 +32,6 @@
     "wagmi": "^2.12.7"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "5.0.0",
-    "@graphql-codegen/client-preset": "^4.2.6",
-    "@graphql-codegen/typescript": "4.0.1",
-    "@graphql-codegen/typescript-graphql-request": "6.1.0",
-    "@graphql-codegen/typescript-operations": "4.0.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
