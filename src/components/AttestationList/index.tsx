@@ -20,11 +20,9 @@ export function AttestationList() {
   useEffect(() => {
     async function fetchAttestationData() {
       if (signer) {
-        // Assuming AttestationList is an async function that returns some data
         const data = await attestationsApi.getAttestationsByAttester({
           attester: signer.address,
         });
-        //@ts-ignore
         setAttestationData(data);
       }
     }
