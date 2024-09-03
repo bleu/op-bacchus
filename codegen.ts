@@ -5,7 +5,7 @@ const config: CodegenConfig = {
   schema: "https://optimism-sepolia.easscan.org/graphql",
   documents: "src/**/*.(ts|tsx)",
   generates: {
-    "src/eas/generated.ts": {
+    "src/lib/gqlEasAttestation/generated.ts": {
       plugins: [
         "typescript",
         "typescript-operations",

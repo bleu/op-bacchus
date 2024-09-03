@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSigner } from "@/hooks/useSigner";
-import { attestationsApi } from "../../../package/gql/src/eas/sdk";
 import { parseData } from "./utils";
+import { attestationsApi } from "@/lib/gqlEasAttestation/sdk";
 
 interface AttestationData {
   attestations: Array<{
