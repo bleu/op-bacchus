@@ -1,18 +1,5 @@
-// interface ParsedData {
-//   [key: string]: string;
-// }
-
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import { Address } from "viem";
-// interface EventI {
-//   owner: Address;
-//   name: string;
-//   briefDescription: string;
-//   fullDescription: string;
-//   startsAt: number;
-//   endsAt: number;
-//   imageUrl: string;
-// }
 
 interface ParsedDataItem {
   name: keyof Event;
