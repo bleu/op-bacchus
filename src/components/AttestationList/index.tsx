@@ -52,7 +52,6 @@ export function AttestationList() {
     return <div>Loading attestation data...</div>;
   }
 
-  console.log(attestationData);
   return (
     <>
       <h2>Attestations</h2>
@@ -68,7 +67,6 @@ export function AttestationList() {
 
 function AttestationItem({ data }: { data: any }) {
   const parsedData = parseData(data);
-  console.log(parsedData);
 
   return (
     <div>
