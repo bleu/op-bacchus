@@ -1,3 +1,5 @@
+import { AttestationList } from "@/components/AttestationList";
+
 export default function Events() {
-    return <h1>Events</h1>
+  return <AttestationList />;
 }
