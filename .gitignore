@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/package/gql/node_modules
 /node_modules
 package/gql/node_modules
 /.pnp

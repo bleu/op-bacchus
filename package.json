@@ -26,6 +26,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-query": "^3.39.3",
+    "react-toastify": "^10.0.5",
     "styled-components": "^6.1.12",
     "tailwind-merge": "^2.5.2",
     "viem": "2.x",
