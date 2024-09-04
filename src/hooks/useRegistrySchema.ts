@@ -1,5 +1,5 @@
 import { useSigner } from "@/hooks/useSigner";
-import { encodePacked, keccak256, zeroAddress } from "viem";
+import { zeroAddress } from "viem";
 import { EAS, SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
 import type { Address } from "viem";
