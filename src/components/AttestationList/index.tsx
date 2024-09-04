@@ -1,11 +1,9 @@
 "use client";
-import request from "graphql-request";
-import { useState, useEffect } from "react";
+
 import { useSigner } from "@/hooks/useSigner";
 import { parseData } from "./utils";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { NEXT_PUBLIC_API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { useChainId } from "wagmi";
+import { useQuery } from "urql";
 
 interface AttestationData {
   attestations: Array<{
@@ -16,33 +14,13 @@ interface AttestationData {
 
 export function AttestationList() {
   const signer = useSigner();
-  const [attestationData, setAttestationData] = useState<AttestationData>({
-    attestations: [],
-  } as AttestationData);
-  const chainId = useChainId();
 
-  useEffect(() => {
-    async function fetchAttestationData() {
-      if (signer) {
-        const data: AttestationData = await request(
-          NEXT_PUBLIC_API_URL_MAPPING[chainId],
-          USER_ATTESTATIONS_QUERY,
-          {
-            attester: signer.address,
-          }
-        );
-        setAttestationData(data);
-      }
-    }
+  const [result] = useQuery({
+    query: USER_ATTESTATIONS_QUERY,
+    variables: { asttester: signer?.address },
+  });
 
-    fetchAttestationData();
-  }, [signer]);
-
-  if (!signer) {
-    return <div>Account not found</div>;
-  }
-
-  if (!attestationData) {
+  if (!result.data) {
     return <div>Loading attestation data...</div>;
   }
 
@@ -50,7 +28,7 @@ export function AttestationList() {
     <>
       <h2>Attestations</h2>
       <div>
-        {attestationData.attestations.map((data: any) => (
+        {result.data.attestations.map((data: any) => (
           <AttestationItem key={data.id} data={data.decodedDataJson} />
         ))}
       </div>
