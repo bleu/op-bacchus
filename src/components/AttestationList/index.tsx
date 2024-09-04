@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useSigner } from "@/hooks/useSigner";
 import { parseData } from "./utils";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { NEXT_PUBLIC_API_URL } from "@/lib/gqlEasAttestation";
+import { NEXT_PUBLIC_API_URL_MAPPING } from "@/lib/gqlEasAttestation";
+import { useChainId } from "wagmi";
 
 interface AttestationData {
   attestations: Array<{
@@ -18,13 +19,18 @@ export function AttestationList() {
   const [attestationData, setAttestationData] = useState<AttestationData>({
     attestations: [],
   } as AttestationData);
+  const chainId = useChainId();
 
   useEffect(() => {
     async function fetchAttestationData() {
       if (signer) {
-        const data:AttestationData = await request(NEXT_PUBLIC_API_URL, USER_ATTESTATIONS_QUERY, {
-          attester: signer.address,
-        });
+        const data: AttestationData = await request(
+          NEXT_PUBLIC_API_URL_MAPPING[chainId],
+          USER_ATTESTATIONS_QUERY,
+          {
+            attester: signer.address,
+          }
+        );
         setAttestationData(data);
       }
     }
