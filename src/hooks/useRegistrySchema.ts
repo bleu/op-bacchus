@@ -12,6 +12,7 @@ interface RegistrySchemaParms {
 }
 
 export const useRegistrySchema = () => {
+  // Addresses only valid for Optimism Sepolia
   const EAS_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000021";
   const SCHEMA_REGISTRY_CONTRACT_ADDRESS =
     "0x4200000000000000000000000000000000000020";
@@ -26,7 +27,6 @@ export const useRegistrySchema = () => {
     if (signer) {
       const newEas = new EAS(EAS_CONTRACT_ADDRESS);
       newEas.connect(signer);
-      setEas(newEas);
 
       const newSchemaRegistry = new SchemaRegistry(
         SCHEMA_REGISTRY_CONTRACT_ADDRESS
@@ -47,14 +47,18 @@ export const useRegistrySchema = () => {
 
             `);
 
-      console.log("Create Event Schema UID:", CREATE_EVENT_SCHEMA_UID);
+      console.log("Schema UID:", CREATE_EVENT_SCHEMA_UID);
+
       const isAbleToOperateSchema = signer && schemaRegistry;
+      console.log("isAbleToOperateSchema", isAbleToOperateSchema);
 
       if (isAbleToOperateSchema) {
         try {
           await schemaRegistry.getSchema({ uid: CREATE_EVENT_SCHEMA_UID });
+          console.log("No errors getting schema");
         } catch (e) {
           // If schemas don't exist, create them
+          console.log("No existing schema, creating a new one...");
           const selfAttestationTx = await schemaRegistry
             .connect(signer)
             .register({
@@ -63,7 +67,12 @@ export const useRegistrySchema = () => {
               revocable: true,
             });
           await selfAttestationTx.wait();
+          console.log("Schema should have been created!");
         }
+      } else {
+        console.log("Not possible to create schema");
+        console.log("signer", signer);
+        console.log("schemaRegistry", schemaRegistry);
       }
     },
     [signer, schemaRegistry]
