@@ -19,6 +19,22 @@ export function getConfig() {
       [optimismSepolia.id]: http(),
     },
   });
+  return createConfig({
+    chains: [optimismSepolia],
+    connectors: [
+      injected(),
+      coinbaseWallet(),
+      // walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID }),
+    ],
+    storage: createStorage({
+      storage: cookieStorage,
+    }),
+    ssr: true,
+    transports: {
+      // [optimism.id]: http(),
+      [optimismSepolia.id]: http(),
+    },
+  });
 }
 
 declare module "wagmi" {
