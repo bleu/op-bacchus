@@ -1,23 +1,25 @@
 "use client";
+
 import { useSigner } from "@/hooks/useSigner";
+import { parseData } from "./utils";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { optimismSepolia, sepolia } from "viem/chains";
 import { useChainId } from "wagmi";
 import { useMemo } from "react";
-import { parseData } from "@/components/AttestationList/utils";
 
-export default function Events() {
+export function AttestationList() {
   const signer = useSigner();
 
   const chainId = useChainId();
 
+  console.log(signer?.address, chainId);
   const attester = signer?.address || "";
   const [result] = useQuery({
     query: USER_ATTESTATIONS_QUERY,
     variables: { attester },
-    context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
+    context: { url: API_URL_MAPPING[chainId] },
     pause: !signer,
   });
 
