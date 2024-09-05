@@ -8,7 +8,7 @@ interface ParsedDataItem {
   };
 }
 
-export const parseData = (data: string): Event => {
+export const parseEventsData = (data: string): Event => {
   const result = {} as Partial<Event>;
 
   try {

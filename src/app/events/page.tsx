@@ -3,10 +3,9 @@ import { useSigner } from "@/hooks/useSigner";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { optimismSepolia, sepolia } from "viem/chains";
 import { useChainId } from "wagmi";
 import { useMemo } from "react";
-import { parseData } from "@/components/AttestationList/utils";
+import { parseEventsData } from "./parseEventsData";
 
 export default function Events() {
   const signer = useSigner();
@@ -49,7 +48,7 @@ export default function Events() {
 }
 
 function AttestationItem({ data }: { data: any }) {
-  const parsedData = parseData(data);
+  const parsedData = parseEventsData(data);
 
   return (
     <div>
