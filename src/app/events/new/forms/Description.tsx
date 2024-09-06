@@ -36,7 +36,7 @@ export function Description() {
       briefDescription: briefDescription,
       fullDescription: fullDescription,
     });
-    handleContinue();
+    handleContinue(getValues());
   };
 
   return (

@@ -51,10 +51,19 @@ function AttestationItem({ data }: { data: any }) {
   const parsedData = parseEventsData(data);
 
   return (
-    <div>
-      <div>{parsedData.name}</div>
-      <div>{parsedData.briefDescription}</div>
-      <div>{parsedData.startsAt}</div>
+    <div className="border-2 rounded-lg w-60">
+      <div className="p-3">
+        <h1 className="text-base font-bold">{parsedData.name}</h1>
+        <h2 className="text-xs">{parsedData.startsAt}</h2>
+      </div>
+      <div>
+        <img className="w-full h-auto" alt="Template image" src={parsedData.imageUrl} />
+      </div>
+      <div className="p-3">
+        <h2 className="text-xs text-gray-700 mb-4">Brief description: {parsedData.briefDescription}</h2>
+        <h2 className="text-xs text-gray-700 mb-4">Full description: {parsedData.fullDescription}</h2>
+      </div>
     </div>
+
   );
 }

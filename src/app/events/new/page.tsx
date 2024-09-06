@@ -6,8 +6,6 @@ import { Tickets } from "./forms/Tickets";
 import {
   type ReactNode,
   createContext,
-  useCallback,
-  useEffect,
   useState,
 } from "react";
 import { useCreateEventAttestation } from "@/hooks/useCreateEventAttestation";
@@ -27,7 +25,7 @@ interface NewEventType {
 }
 
 interface NewEventContextInterface {
-  handleContinue: () => void;
+  handleContinue: (formData: any) => void;
   updateEvent: (updateEventValues: Partial<NewEventType>) => void;
 }
 
@@ -60,12 +58,13 @@ export default function CreateEvent() {
     Confirm: "Overview",
   };
 
-  function handleContinue() {
+  function handleContinue(formData: any) {
     setStep(nextStepMapping[step]);
     if (step === "Description") {
       const newEventToAttest = {
         event: {
           ...newEvent,
+          ...formData,
           owner: address,
         } as Event,
       };

@@ -4,8 +4,6 @@ import { FormContainer } from "../components/FormContainer";
 import { FormField } from "../components/FormField";
 import {
   useForm,
-  type FieldError,
-  type UseFormRegister,
 } from "react-hook-form";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -120,7 +118,7 @@ export function Overview() {
       imageUrl: imageUrl,
     });
 
-    handleContinue();
+    handleContinue(getValues());
   };
 
   const handleTypeChange = (value: "online" | "inPerson") => {
