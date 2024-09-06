@@ -31,11 +31,8 @@ export function Header() {
           <NavItem key={link.href} href={link.href}>
             {link.label}
           </NavItem>
-        ))}
       </nav>
-      <div className="flex w-2/6 h-10 justify-end">
-        <CreateEventAttestationButton />
-        <CreateEventSchemaButton />
+      <div className="flex w-2/6 h-10 justify-center md:justify-end">
         <ConnectButton />
       </div>
     </div>
