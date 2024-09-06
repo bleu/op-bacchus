@@ -16,6 +16,7 @@ export interface Event {
   startsAt: number;
   endsAt: number;
   imageUrl: string;
+  type: "online" | "inPerson";
 }
 
 export const CREATE_EVENT_SCHEMA_ENCODER = new SchemaEncoder(
@@ -58,6 +59,11 @@ export const useCreateEventAttestation = () => {
         {
           name: "fullDescription",
           value: encodeURIComponent(event.fullDescription),
+          type: "string",
+        },
+        {
+          name: "type",
+          value: encodeURIComponent(event.type),
           type: "string",
         },
         {

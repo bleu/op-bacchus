@@ -11,6 +11,7 @@ const newEvent = {
   briefDescription: "test description",
   fullDescription:
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, numquam! Esse officia molestiae illum nihil dolorum rem debitis laborum ab. Quaerat voluptatibus repellendus deserunt porro distinctio laboriosam earum nesciunt laborum?",
+  type: "online",
   startsAt: today.valueOf(),
   endsAt: tomorrow.valueOf(),
   imageUrl: "https://picsum.photos/id/237/200/300",
