@@ -40,10 +40,10 @@ export default function Events() {
   }
 
   return (
-    <>
+    <div className="mx-20">
       <h2>Attestations</h2>
-      <div>{attestationList}</div>
-    </>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">{attestationList}</div>
+    </div>
   );
 }
 
