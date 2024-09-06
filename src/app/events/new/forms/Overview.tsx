@@ -1,9 +1,14 @@
 import { NewEventContext } from "@/app/events/new/page";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import type { FieldError, UseFormRegister } from "react-hook-form";
-import { type ZodType, z } from "zod"; // Add new import
+import { FormContainer } from "../components/FormContainer";
+import { FormField } from "../components/FormField";
+import {
+  useForm,
+  type FieldError,
+  type UseFormRegister,
+} from "react-hook-form";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormData {
   eventName: string;
@@ -13,65 +18,33 @@ interface FormData {
   endsAtTime: string;
   type: string;
   imageUrl: string;
+  // briefDescription: string;
+  // fullDescription: string;
 }
-
-interface FormFieldProps {
-  className: string;
-  label: string;
-  type: string;
-  placeholder: string;
-  name: ValidFieldNames;
-  register: UseFormRegister<FormData>;
-  error: FieldError | undefined;
-  valueAsNumber?: boolean;
-}
-
-type ValidFieldNames =
-  | "eventName"
-  | "startsAt"
-  | "startsAtTime"
-  | "endsAt"
-  | "endsAtTime"
-  | "type"
-  | "imageUrl";
-
-const FormField: React.FC<FormFieldProps> = ({
-  className,
-  label,
-  type,
-  placeholder,
-  name,
-  register,
-  error,
-  valueAsNumber,
-}) => {
-  const strongClassName =
-    label === "empty" ? "w-fit text-transparent" : "w-fit";
-  return (
-    <div className="flex flex-col w-fit mb-16">
-      <strong className={strongClassName}>{label}</strong>
-      <input
-        className={className}
-        type={type}
-        placeholder={placeholder}
-        {...register(name, { valueAsNumber })}
-      />
-      {error && <span className="error-message">{error.message}</span>}
-    </div>
-  );
-};
 
 const UserSchema: ZodType<FormData> = z.object({
-  eventName: z.string().max(10),
-  startsAt: z.string().date(),
-  startsAtTime: z.string().time(),
+  eventName: z.string(),
+  startsAt: z.string(),
+  startsAtTime: z.string(),
   endsAt: z.string(),
-  endsAtTime: z.string().time(),
+  endsAtTime: z.string(),
   type: z.string(),
   imageUrl: z.string(),
+  // briefDescription: z.string(),
+  // fullDescription: z.string(),
 });
 
-const TypeSelect = ({ onChange }: { onChange: (value: string) => void }) => {
+function dateTimeToTimestamp(dateString: string, timeString: string): number {
+  const dateTimeString = `${dateString}T${timeString}`;
+  const date = new Date(dateTimeString);
+  return date.getTime();
+}
+
+const TypeSelect = ({
+  onChange,
+}: {
+  onChange: (value: "online" | "inPerson") => void;
+}) => {
   const [selectedType, setSelectedType] = useState("online");
 
   const options = [
@@ -122,62 +95,41 @@ const TypeSelect = ({ onChange }: { onChange: (value: string) => void }) => {
 };
 
 export function Overview() {
-  const { isContinueEnabled, setIsContinueEnabled } =
-    useContext(NewEventContext);
+  const { handleContinue, updateEvent } = useContext(NewEventContext);
+  const [eventType, setEventType] = useState<"online" | "inPerson">("online");
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    setError,
-    watch,
+    formState: { errors, isValid },
+    getValues,
   } = useForm<FormData>({
-    resolver: zodResolver(UserSchema), // Apply the zodResolver
+    resolver: zodResolver(UserSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   function submitForm() {
-    console.log("Sucesso!");
+    const { eventName, startsAt, startsAtTime, endsAt, endsAtTime, imageUrl } =
+      getValues();
+    updateEvent({
+      name: eventName,
+      startsAt: dateTimeToTimestamp(startsAt, startsAtTime),
+      endsAt: dateTimeToTimestamp(endsAt, endsAtTime),
+      type: eventType,
+      imageUrl: imageUrl,
+    });
+
+    handleContinue();
   }
 
-  const handleTypeChange = (value: string) => {
+  const handleTypeChange = (value: "online" | "inPerson") => {
     console.log("Selected type:", value);
-    // Update your form state here
+    setEventType(value);
   };
 
-  const eventName = watch("eventName");
-  const startsAt = watch("startsAt");
-  const startsAtTime = watch("startsAtTime");
-  const endsAt = watch("endsAt");
-  const endsAtTime = watch("endsAtTime");
-  const imageUrl = watch("imageUrl");
-
-  if (
-    eventName &&
-    startsAt &&
-    startsAtTime &&
-    endsAt &&
-    endsAtTime &&
-    imageUrl &&
-    !isContinueEnabled
-  ) {
-    setIsContinueEnabled(true);
-  }
-  if (
-    !(
-      eventName &&
-      startsAt &&
-      startsAtTime &&
-      endsAt &&
-      endsAtTime &&
-      imageUrl
-    ) &&
-    isContinueEnabled
-  ) {
-    setIsContinueEnabled(true);
-  }
-
   return (
-    <>
+    <FormContainer isContinueEnabled={true} handleContinue={submitForm}>
       <form className="block w-full" onSubmit={handleSubmit(submitForm)}>
         <h2 className="text-4xl text-bold mb-16">+ Create New Event</h2>
         <div className="flex items-center justify-between">
@@ -242,6 +194,6 @@ export function Overview() {
           error={errors.imageUrl}
         />
       </form>
-    </>
+    </FormContainer>
   );
 }
