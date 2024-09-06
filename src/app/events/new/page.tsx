@@ -3,7 +3,13 @@ import { Confirm } from "./forms/Confirm";
 import { Description } from "./forms/Description";
 import { Overview } from "./forms/Overview";
 import { Tickets } from "./forms/Tickets";
-import { type ReactNode, createContext, useState } from "react";
+import {
+  type ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useCreateEventAttestation } from "@/hooks/useCreateEventAttestation";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import { useAccount } from "wagmi";
@@ -33,9 +39,12 @@ export default function CreateEvent() {
   const createEventAttestation = useCreateEventAttestation();
   const { address } = useAccount();
 
-  function updateEvent(updateEventValues: Partial<NewEventType>) {
-    setNewEvent({ ...newEvent, ...updateEventValues });
-  }
+  const updateEvent = (updateEventValues: Partial<NewEventType>) => {
+    return new Promise<void>((resolve) => {
+      setNewEvent({ ...newEvent, ...updateEventValues });
+      setTimeout(() => resolve(), 0);
+    });
+  };
 
   const stepComponents: { [key in StepType]: ReactNode } = {
     Overview: <Overview />,
@@ -60,8 +69,6 @@ export default function CreateEvent() {
           owner: address,
         } as Event,
       };
-      console.log(newEventToAttest);
-
       createEventAttestation(newEventToAttest);
     }
   }

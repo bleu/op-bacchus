@@ -109,7 +109,7 @@ export function Overview() {
     reValidateMode: "onChange",
   });
 
-  function submitForm() {
+  const submitForm = () => {
     const { eventName, startsAt, startsAtTime, endsAt, endsAtTime, imageUrl } =
       getValues();
     updateEvent({
@@ -121,7 +121,7 @@ export function Overview() {
     });
 
     handleContinue();
-  }
+  };
 
   const handleTypeChange = (value: "online" | "inPerson") => {
     console.log("Selected type:", value);
