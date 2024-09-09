@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { MaterialSymbol } from "react-material-symbols";
 
+const ticketAddresses = [
+  { address: "0xkamscknsadkcnaksdncjsdncsjdn" },
+  { address: "0xkamscknsadkcnaksdncjsdncsjab" },
+  { address: "0xkamscknsadkcnaksdncjsdncsjac" },
+];
+
 const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
     <div className="w-1150px block py-4 px-8 border-2 rounded-3xl mb-10">
@@ -20,15 +26,13 @@ const StatusFlag = () => {
 
 const TicketInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="w-1150px h-96 min-h- flex flex-col justify-between items-center py-4 px-8 border-2 rounded-3xl">
-      {children}
-    </div>
+    <div className="w-1150px py-4 px-8 border-2 rounded-3xl">{children}</div>
   );
 };
 
 const TicketInfoHeaderContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex items-center justify-between w-full border-b-2 pb-2 mb-2">
+    <div className="flex items-center justify-between w-full border-b-2 pb-2">
       {children}
     </div>
   );
@@ -40,6 +44,14 @@ const AssignTicketButton = () => {
       <MaterialSymbol icon="assignment_ind" size={24} />
       <span>Assign Ticket</span>
     </button>
+  );
+};
+
+const Ticket = ({ address }: { address: string }) => {
+  return (
+    <p className="p-3 rounded-lg bg-slate-200 my-4 w-[600px] text-lg text-slate-700">
+      {address}
+    </p>
   );
 };
 
@@ -57,6 +69,11 @@ export default function Page({ params }: { params: { id: string } }) {
           <strong>Assigned Tickets</strong>
           <AssignTicketButton />
         </TicketInfoHeaderContainer>
+        <div className="block mt-4">
+          {ticketAddresses.map((ticket) => {
+            return <Ticket key={ticket.address} address={ticket.address} />;
+          })}
+        </div>
       </TicketInfoContainer>
     </main>
   );
