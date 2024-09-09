@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodType } from "zod";
 
-interface FormData {
+export interface DescriptionFormData {
   briefDescription: string;
   fullDescription: string;
 }
 
-const UserSchema: ZodType<FormData> = z.object({
+const UserSchema: ZodType<DescriptionFormData> = z.object({
   briefDescription: z.string(),
   fullDescription: z.string(),
 });
@@ -24,7 +24,7 @@ export function Description() {
     handleSubmit,
     formState: { errors, isValid },
     getValues,
-  } = useForm<FormData>({
+  } = useForm<DescriptionFormData>({
     resolver: zodResolver(UserSchema),
     mode: "onChange",
     reValidateMode: "onChange",

@@ -3,14 +3,12 @@ import { Confirm } from "./forms/Confirm";
 import { Description } from "./forms/Description";
 import { Overview } from "./forms/Overview";
 import { Tickets } from "./forms/Tickets";
-import {
-  type ReactNode,
-  createContext,
-  useState,
-} from "react";
+import { type ReactNode, createContext, useState } from "react";
 import { useCreateEventAttestation } from "@/hooks/useCreateEventAttestation";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import { useAccount } from "wagmi";
+import type { OverviewFormData } from "./forms/Overview";
+import type { DescriptionFormData } from "./forms/Description";
 
 type StepType = "Overview" | "Description" | "Tickets" | "Confirm";
 interface NewEventType {
@@ -25,7 +23,7 @@ interface NewEventType {
 }
 
 interface NewEventContextInterface {
-  handleContinue: (formData: any) => void;
+  handleContinue: (formData: OverviewFormData | DescriptionFormData) => void;
   updateEvent: (updateEventValues: Partial<NewEventType>) => void;
 }
 
@@ -58,7 +56,7 @@ export default function CreateEvent() {
     Confirm: "Overview",
   };
 
-  function handleContinue(formData: any) {
+  function handleContinue(formData: OverviewFormData | DescriptionFormData) {
     setStep(nextStepMapping[step]);
     if (step === "Description") {
       const newEventToAttest = {

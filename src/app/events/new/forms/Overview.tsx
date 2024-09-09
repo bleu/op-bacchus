@@ -2,13 +2,11 @@ import { NewEventContext } from "@/app/events/new/page";
 import { useContext, useState } from "react";
 import { FormContainer } from "../components/FormContainer";
 import { FormField } from "../components/FormField";
-import {
-  useForm,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-interface FormData {
+export interface OverviewFormData {
   eventName: string;
   startsAt: string;
   startsAtTime: string;
@@ -20,7 +18,7 @@ interface FormData {
   // fullDescription: string;
 }
 
-const UserSchema: ZodType<FormData> = z.object({
+const UserSchema: ZodType<OverviewFormData> = z.object({
   eventName: z.string(),
   startsAt: z.string(),
   startsAtTime: z.string(),
@@ -101,7 +99,7 @@ export function Overview() {
     handleSubmit,
     formState: { errors, isValid },
     getValues,
-  } = useForm<FormData>({
+  } = useForm<OverviewFormData>({
     resolver: zodResolver(UserSchema),
     mode: "onChange",
     reValidateMode: "onChange",
