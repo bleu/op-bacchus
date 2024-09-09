@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { NewEventContext } from "../page";
 import { FormContainer } from "../components/FormContainer";
 import { FormField } from "../components/FormField";
@@ -52,15 +52,19 @@ export function Description() {
           register={register}
           error={errors.briefDescription}
         />
-        <FormField
-          className="text-justify w-1000px h-48 h-12 mt-1 pl-2 border-2 rounded-lg"
-          label="Detailed Description"
-          type="text"
-          placeholder="Enter all relevant event details here (e.g., schedule, location details, special guests, key topics)."
-          name="fullDescription"
-          register={register}
-          error={errors.fullDescription}
-        />
+        <div className="flex flex-col w-fit mb-16">
+          <strong className="w-fit">Detailed Description</strong>
+          <textarea
+            className="w-1000px h-48 mt-1 pl-2 border-2 rounded-lg"
+            placeholder="Enter all relevant event details here (e.g., schedule, location details, special guests, key topics)."
+            {...register("fullDescription")}
+          />
+          {errors.fullDescription && (
+            <span className="error-message">
+              {errors.fullDescription as ReactNode}
+            </span>
+          )}
+        </div>
       </form>
     </FormContainer>
   );
