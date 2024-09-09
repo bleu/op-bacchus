@@ -72,6 +72,7 @@ export default function Events() {
     
   // );
 
+
   const attestationList = useMemo(
     () => 
       data?.attestations &&
@@ -80,6 +81,8 @@ export default function Events() {
       )),
     [data?.attestations]
   );
+
+  console.log(attestationList)
 
   if (!signer) {
     return <div>Connect a wallet to view your attestations.</div>;
@@ -99,11 +102,11 @@ export default function Events() {
 }
 
 
+
 function AttestationItem({ data }: { data: any }) {
-  let parsedData = parseEventsData(data);
-  parsedData.startsAt = parsedData.startsAt + (259200000 * (Math.floor(Math.random() * 7) - 3))
+  const parsedData = parseEventsData(data);
   
-  
+
   return (
     <div className="border-2 rounded-lg w-60">
       <div className="p-3">
@@ -121,5 +124,4 @@ function AttestationItem({ data }: { data: any }) {
 
   );
 }
-
 

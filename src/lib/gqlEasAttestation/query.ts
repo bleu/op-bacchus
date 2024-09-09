@@ -4,7 +4,6 @@ export const USER_ATTESTATIONS_QUERY = graphql(`
 query getAttestationsByAttester($attester: String!) {
   attestations(
     where: { attester: {equals: $attester} }
-    orderBy: { timeCreated: desc }
   ) {
     id 
     attester
