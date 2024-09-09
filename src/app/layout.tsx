@@ -1,4 +1,5 @@
 import "./globals.css";
+import "react-material-symbols/rounded";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";

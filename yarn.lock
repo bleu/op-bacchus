@@ -727,7 +727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/gen-mapping@npm:^0.3.2":
+"@jridgewell/gen-mapping@npm:^0.3.2, @jridgewell/gen-mapping@npm:^0.3.5":
   version: 0.3.5
   resolution: "@jridgewell/gen-mapping@npm:0.3.5"
   dependencies:
@@ -759,7 +759,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/trace-mapping@npm:^0.3.24":
+"@jridgewell/trace-mapping@npm:^0.3.24, @jridgewell/trace-mapping@npm:^0.3.25":
   version: 0.3.25
   resolution: "@jridgewell/trace-mapping@npm:0.3.25"
   dependencies:
@@ -4541,6 +4541,7 @@ __metadata:
     graphql: "npm:^16.9.0"
     graphql-request: "npm:6.1.0"
     lucide-react: "npm:^0.436.0"
+    material-symbols: "npm:^0.23.0"
     next: "npm:14.2.7"
     pino-pretty: "npm:^11.2.2"
     postcss: "npm:^8"
@@ -4548,6 +4549,7 @@ __metadata:
     react: "npm:^18"
     react-dom: "npm:^18"
     react-hook-form: "npm:^7.53.0"
+    react-material-symbols: "npm:^4.4.0"
     react-query: "npm:^3.39.3"
     react-toastify: "npm:^10.0.5"
     tailwind-merge: "npm:^2.5.2"
@@ -6795,6 +6797,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:^11.1.0":
+  version: 11.12.0
+  resolution: "globals@npm:11.12.0"
+  checksum: 10c0/758f9f258e7b19226bd8d4af5d3b0dcf7038780fb23d82e6f98932c44e239f884847f1766e8fa9cc5635ccb3204f7fa7314d4408dd4002a5e8ea827b4018f0a1
+  languageName: node
+  linkType: hard
+
 "globals@npm:^13.19.0":
   version: 13.24.0
   resolution: "globals@npm:13.24.0"
@@ -7766,7 +7775,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-tokens@npm:^3.0.0 || ^4.0.0":
+"js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
   checksum: 10c0/e248708d377aa058eacf2037b07ded847790e6de892bbad3dac0abba2e759cb9f121b00099a65195616badcb6eca8d14d975cb3e89eb1cfda644756402c8aeed
@@ -7788,6 +7797,15 @@ __metadata:
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
   checksum: 10c0/4f907fb78d7b712e11dea8c165fe0921f81a657d3443dde75359ed52eb2b5d33ce6773d97985a089f09a65edd80b11cb75c767b57ba47391fee4c969f7215c96
+  languageName: node
+  linkType: hard
+
+"jsesc@npm:^2.5.1":
+  version: 2.5.2
+  resolution: "jsesc@npm:2.5.2"
+  bin:
+    jsesc: bin/jsesc
+  checksum: 10c0/dbf59312e0ebf2b4405ef413ec2b25abb5f8f4d9bc5fb8d9f90381622ebca5f2af6a6aa9a8578f65903f9e33990a6dc798edd0ce5586894bf0e9e31803a1de88
   languageName: node
   linkType: hard
 
@@ -8143,6 +8161,13 @@ __metadata:
     "@babel/runtime": "npm:^7.23.8"
     remove-accents: "npm:0.5.0"
   checksum: 10c0/35d2a6b6df003c677d9ec87ecd4683657638f5bce856f43f9cf90b03e357ed2f09813ebbac759defa7e7438706936dd34dc2bfe1a18771f7d2541f14d639b4ad
+  languageName: node
+  linkType: hard
+
+"material-symbols@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "material-symbols@npm:0.23.0"
+  checksum: 10c0/dd00109fd1f0e0d314f3db02cc58f14e58ae87e80c97d572ea7ffb57a27ff9eae530ba703dc98330960d6621fa4d3c2e034bf844c322c9bd1c29c7b188f25ce3
   languageName: node
   linkType: hard
 
@@ -9587,6 +9612,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-material-symbols@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "react-material-symbols@npm:4.4.0"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 10c0/fe1755c549477967a6b7ec8d2f7e9f8631b3850577256ea8cb47be1851f53bfd916ac4a5c55b80b3710ac7be3a885b5853989fd5c50cd7a7f9d8add9035a78e6
+  languageName: node
+  linkType: hard
+
 "react-native-webview@npm:^11.26.0":
   version: 11.26.1
   resolution: "react-native-webview@npm:11.26.1"
@@ -10783,6 +10818,13 @@ __metadata:
   dependencies:
     os-tmpdir: "npm:~1.0.2"
   checksum: 10c0/69863947b8c29cabad43fe0ce65cec5bb4b481d15d4b4b21e036b060b3edbf3bc7a5541de1bacb437bb3f7c4538f669752627fdf9b4aaf034cebd172ba373408
+  languageName: node
+  linkType: hard
+
+"to-fast-properties@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "to-fast-properties@npm:2.0.0"
+  checksum: 10c0/b214d21dbfb4bce3452b6244b336806ffea9c05297148d32ebb428d5c43ce7545bdfc65a1ceb58c9ef4376a65c0cb2854d645f33961658b3e3b4f84910ddcdd7
   languageName: node
   linkType: hard
 
