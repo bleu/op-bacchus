@@ -14,8 +14,6 @@ export interface OverviewFormData {
   endsAtTime: string;
   type: string;
   imageUrl: string;
-  // briefDescription: string;
-  // fullDescription: string;
 }
 
 const UserSchema: ZodType<OverviewFormData> = z.object({
@@ -26,8 +24,6 @@ const UserSchema: ZodType<OverviewFormData> = z.object({
   endsAtTime: z.string(),
   type: z.string(),
   imageUrl: z.string(),
-  // briefDescription: z.string(),
-  // fullDescription: z.string(),
 });
 
 function dateTimeToTimestamp(dateString: string, timeString: string): number {
