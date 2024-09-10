@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { clsx } from "clsx";
 
 function ContinueButton({
   isContinueEnabled,
@@ -9,9 +10,10 @@ function ContinueButton({
 }) {
   return (
     <button
-      className={`w-52 rounded-xl bg-slate-300 py-2 font-medium text-slate-600
-            ${isContinueEnabled ? "hover:bg-red-400 hover:text-white" : ""}
-        `}
+      className={clsx(
+        "w-52 rounded-xl bg-slate-300 py-2 font-medium text-slate-600",
+        { isContinueEnabled: "hover:bg-red-400 hover:text-white" }
+      )}
       onClick={handleContinue}
       disabled={!isContinueEnabled}
     >
