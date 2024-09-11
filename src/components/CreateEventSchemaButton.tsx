@@ -2,7 +2,7 @@ import { useRegistrySchema } from "@/hooks/useRegistrySchema";
 import { encodePacked, keccak256, zeroAddress } from "viem";
 
 export const CREATE_EVENT_SCHEMA =
-  "address owner, string name, string briefDescription, string fullDescription, uint256 startsAt, uint256 endsAt, string imageUrl";
+  "address owner, string name, string briefDescription, string fullDescription, string type, uint256 startsAt, uint256 endsAt, string imageUrl";
 
 export const CREATE_EVENT_SCHEMA_UID = keccak256(
   encodePacked(
