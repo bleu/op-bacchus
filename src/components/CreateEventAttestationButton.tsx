@@ -4,7 +4,10 @@ import { toast } from "react-toastify";
 
 const today = new Date();
 const tomorrow = new Date();
+const datex = new Date();
 tomorrow.setDate(today.getDate() + 1);
+datex.setDate(today.getDate() + 3);
+
 const newEvent = {
   owner: "0xa90914762709441d557De208bAcE1edB1A3968b2",
   name: "test",
