@@ -5,22 +5,23 @@ import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { useChainId } from "wagmi";
 import { useMemo } from "react";
+import { fromUnixTime, format } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { parseEventsData } from "./parseEventsData";
 
+
 function epochToCustomDate(epoch: number): string {
-	const date: Date = new Date(epoch);
+  try {
+    const epochInSeconds = epoch.toString().length > 10 ? epoch / 1000 : epoch;
+    
+    const date = fromUnixTime(epochInSeconds);
 
-	// Get the day, month, and year
-	const day: number = date.getUTCDate();
-	const month: string = date.toLocaleString("default", {
-		month: "long",
-		timeZone: "UTC",
-	});
-	const year: number = date.getUTCFullYear();
-
-	// Format the date string
-	return `${day}, ${month} of ${year}`;
+    return format(date, "d, MMMM 'of' yyyy", { locale: enUS });
+  } catch (error) {
+    return 'Invalid Date';
+  }
 }
+
 
 interface DataEntry {
 	attester: string;
