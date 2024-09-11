@@ -4533,6 +4533,7 @@ __metadata:
     "@types/react-dom": "npm:^18"
     babel-eslint: "npm:^10.1.0"
     class-variance-authority: "npm:^0.7.0"
+    date-fns: "npm:^3.6.0"
     eslint: "npm:^8.0.1"
     eslint-config-next: "npm:14.2.6"
     ethers: "npm:^6.13.2"
@@ -4541,7 +4542,6 @@ __metadata:
     graphql: "npm:^16.9.0"
     graphql-request: "npm:6.1.0"
     lucide-react: "npm:^0.436.0"
-    material-symbols: "npm:^0.23.0"
     next: "npm:14.2.7"
     pino-pretty: "npm:^11.2.2"
     postcss: "npm:^8"
@@ -5301,6 +5301,13 @@ __metadata:
   dependencies:
     "@babel/runtime": "npm:^7.21.0"
   checksum: 10c0/e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 10c0/0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -8161,13 +8168,6 @@ __metadata:
     "@babel/runtime": "npm:^7.23.8"
     remove-accents: "npm:0.5.0"
   checksum: 10c0/35d2a6b6df003c677d9ec87ecd4683657638f5bce856f43f9cf90b03e357ed2f09813ebbac759defa7e7438706936dd34dc2bfe1a18771f7d2541f14d639b4ad
-  languageName: node
-  linkType: hard
-
-"material-symbols@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "material-symbols@npm:0.23.0"
-  checksum: 10c0/dd00109fd1f0e0d314f3db02cc58f14e58ae87e80c97d572ea7ffb57a27ff9eae530ba703dc98330960d6621fa4d3c2e034bf844c322c9bd1c29c7b188f25ce3
   languageName: node
   linkType: hard
 

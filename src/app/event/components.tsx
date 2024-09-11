@@ -20,7 +20,7 @@ export const StatusFlag = () => {
 
 export const TicketInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="w-1150px py-4 px-8 border-2 rounded-3xl">{children}</div>
+    <div className="w-1150px py-12 px-12 border-2 rounded-3xl">{children}</div>
   );
 };
 
