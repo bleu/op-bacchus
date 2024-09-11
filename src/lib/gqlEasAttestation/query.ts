@@ -1,7 +1,7 @@
 import { graphql } from "gql.tada";
 
 export const USER_ATTESTATIONS_QUERY = graphql(`
- query getAttestationsByAttester($attester: String!) {
+query getAttestationsByAttester($attester: String!) {
   attestations(
     where: { attester: {equals: $attester} }
   ) {
@@ -14,6 +14,9 @@ export const USER_ATTESTATIONS_QUERY = graphql(`
     expirationTime
     data
     decodedDataJson
+    timeCreated
   }
 }
 `);
+
+
