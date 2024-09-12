@@ -7,6 +7,7 @@ import { useAccount, useChainId } from "wagmi";
 import { useMemo } from "react";
 import { parseEventsData } from "../../events/parseEventsData";
 import { format } from "date-fns";
+
 import { Modal } from "../Modal";
 
 import {
