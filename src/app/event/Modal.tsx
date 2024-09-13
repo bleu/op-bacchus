@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isAddress } from "viem";
 import {
   Dialog,
   DialogContent,
@@ -35,8 +36,23 @@ const TriggerDialogButton = ({ ...props }) => {
   );
 };
 
-const isValidEthereumAddress = (address: string) => {
-  return /^0x[a-fA-F0-9]{40}$/.test(address);
+const CloseDialogButton = ({ ...props }) => {
+  const isValid = props.isValid;
+  return (
+    <button
+      type="submit"
+      className={clsx(
+        "rounded-xl px-40 py-3 gap-2",
+        isValid
+          ? "bg-red-600 text-white hover:bg-red-800"
+          : "bg-slate-500 text-slate-100"
+      )}
+      disabled={!isValid}
+      {...props}
+    >
+      Assign Tickets
+    </button>
+  );
 };
 
 export function Modal() {
@@ -52,12 +68,13 @@ export function Modal() {
       addresses: [{ address: "" }],
     },
   });
-  const { append, remove } = useFieldArray({
+
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "addresses",
   });
 
-  const fields = watch("addresses");
+  const watchedFields = watch("addresses");
 
   function submitForm(data: FormData) {
     const filteredData = data.addresses.filter(
@@ -67,51 +84,18 @@ export function Modal() {
     setOpen(false);
   }
 
-  function handleAppendNewFields() {
-    const lastElement = fields[fields.length - 1];
-    if (isValidEthereumAddress(lastElement?.address)) {
+  function handleNumberOfFields() {
+    const lastElement = watchedFields[watchedFields.length - 1];
+    if (isAddress(lastElement?.address)) {
       append({ address: "" });
     }
-  }
-  function handleDeleteFields() {
-    const emptyElements = fields
-      .map((field, index) => {
-        if (field.address === "")
-          return { index: index, address: field.address };
-      })
-      .filter((element) => element);
+
+    const emptyElements = watchedFields
+      .map((field, index) => (field.address === "" ? index : -1))
+      .filter((index) => index !== -1);
     if (emptyElements.length > 1) {
-      remove(emptyElements[0]?.index);
+      remove(emptyElements[0]);
     }
-  }
-
-  function handleNumberOfFields() {
-    handleAppendNewFields();
-    handleDeleteFields();
-  }
-
-  function AddressInput({ index }: { index: number }) {
-    return (
-      <div>
-        {errors.addresses?.[index]?.address && (
-          <p className="text-red-500 text-sm mt-2">
-            {errors.addresses[index]?.address?.message}
-          </p>
-        )}
-        <input
-          type="text"
-          placeholder="0xabc..."
-          className="p-3 rounded-lg bg-slate-200 mb-4 w-[500px] mr-16 text-slate-700 text-lg"
-          {...register(`addresses.${index}.address`, {
-            validate: (value) =>
-              value === "" ||
-              isValidEthereumAddress(value) ||
-              "Invalid Ethereum address",
-            onChange: handleNumberOfFields,
-          })}
-        />
-      </div>
-    );
   }
 
   return (
@@ -134,22 +118,29 @@ export function Modal() {
             </p>
             <br />
             <form onSubmit={handleSubmit(submitForm)}>
-              {fields.map((field, index) => {
-                return <AddressInput key={index} index={index} />;
-              })}
-              <div className="flex justify-center space-x-2">
-                <button
-                  type="submit"
-                  className={clsx(
-                    " rounded-xl px-40 py-3 gap-2",
-                    isValid
-                      ? " bg-red-600 text-white  hover:bg-red-800"
-                      : " bg-slate-500 text-slate-100"
+              {fields.map((field, index) => (
+                <div key={field.id}>
+                  <input
+                    type="text"
+                    placeholder="0xabc..."
+                    className="p-3 rounded-lg bg-slate-200 mb-1 w-[500px] mr-16 text-slate-700 text-lg"
+                    {...register(`addresses.${index}.address`, {
+                      validate: (value) => {
+                        if (value === "") return true;
+                        return isAddress(value) || "Invalid Ethereum address";
+                      },
+                      onChange: handleNumberOfFields,
+                    })}
+                  />
+                  {errors.addresses?.[index]?.address && (
+                    <p className="text-red-500 text-sm mb-3">
+                      {errors.addresses[index]?.address?.message}
+                    </p>
                   )}
-                  disabled={!isValid}
-                >
-                  Assign Tickets
-                </button>
+                </div>
+              ))}
+              <div className="flex justify-center space-x-2 mt-4">
+                <CloseDialogButton isValid={isValid} />
               </div>
             </form>
           </DialogDescription>
