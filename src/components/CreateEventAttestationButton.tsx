@@ -4,13 +4,17 @@ import { toast } from "react-toastify";
 
 const today = new Date();
 const tomorrow = new Date();
+const datex = new Date();
 tomorrow.setDate(today.getDate() + 1);
+datex.setDate(today.getDate() + 3);
+
 const newEvent = {
   owner: "0xa90914762709441d557De208bAcE1edB1A3968b2",
   name: "test",
   briefDescription: "test description",
   fullDescription:
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, numquam! Esse officia molestiae illum nihil dolorum rem debitis laborum ab. Quaerat voluptatibus repellendus deserunt porro distinctio laboriosam earum nesciunt laborum?",
+  type: "online",
   startsAt: today.valueOf(),
   endsAt: tomorrow.valueOf(),
   imageUrl: "https://picsum.photos/id/237/200/300",
