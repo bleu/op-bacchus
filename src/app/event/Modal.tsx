@@ -67,6 +67,7 @@ export function Modal() {
     defaultValues: {
       addresses: [{ address: "" }],
     },
+    mode: "onChange",
   });
 
   const { fields, append, remove } = useFieldArray({
