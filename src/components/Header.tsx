@@ -41,7 +41,6 @@ export function Header() {
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
-				<NavItem href={"/tickets"}>Tickets</NavItem>
 			</nav>
 			<div className="flex w-2/6 h-10 justify-center md:justify-end">
 				<ConnectButton />
