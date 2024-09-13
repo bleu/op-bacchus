@@ -1,6 +1,5 @@
 import { useRegistrySchema } from "@/hooks/useRegistrySchema";
 import { encodePacked, keccak256, zeroAddress } from "viem";
-// import { CREATE_EVENT_SCHEMA } from "./CreateEventSchemaButton";
 
 export const CREATE_TICKET_SCHEMA =
   "address owner, string eventid";
@@ -11,8 +10,7 @@ export const CREATE_TICKET_SCHEMA =
       [CREATE_TICKET_SCHEMA, zeroAddress, true]
     )
   );
-  console.log(CREATE_TICKET_SCHEMA_UID)
-  
+    
   export function CreateTicketSchemaButton() {
     const registrySchema = useRegistrySchema();
 
