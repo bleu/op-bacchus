@@ -9,7 +9,7 @@ export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
 
 export const StatusFlag = () => {
 	return (
-		<div className="flex w-fit justify-center items-center gap-2 bg-slate-200 py-1 px-3 rounded-lg">
+		<div className="flex w-fit justify-center items-center gap-2 bg-slate-200 py-1 px-3 rounded-lg mb-4">
 			<div className="w-3 h-3 rounded-md bg-[#B2CC99]"></div>
 			<span>Published</span>
 		</div>

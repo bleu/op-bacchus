@@ -63,7 +63,7 @@ export default function Page({ params }: { params: { id: string } }) {
 				style={{ backgroundImage: `url(${parsedData.imageUrl})` }}
 			></div>
 			<EventInfoContainer>
-				<div className="flex justify-between">
+				<div className="flex flex-col md:flex-row md:justify-between">
 					<h1 className="text-4xl font-bold mb-4">{parsedData.name}</h1>
 					<StatusFlag />
 				</div>
