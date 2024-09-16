@@ -3,7 +3,7 @@ import { MaterialSymbol } from "react-material-symbols";
 
 export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="w-1150px block py-4 px-8 border-2 rounded-3xl mb-10">
+    <div className="w-1150px block py-4 px-8 border-2 rounded-3xl">
       {children}
     </div>
   );

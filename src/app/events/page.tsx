@@ -62,7 +62,6 @@ function AttestationItem({ id, data }: { id: string; data: any }) {
       href={`/event/${id}`}
       className="border-2 rounded-lg w-60 hover:border-slate-600"
     >
-      {/* <div className=""> */}
       <div className="p-3">
         <h1 className="text-base font-bold">{parsedData.name}</h1>
         <h2 className="text-xs">{parsedData.startsAt}</h2>
