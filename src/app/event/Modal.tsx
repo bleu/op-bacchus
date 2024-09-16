@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isAddress } from "viem";
+import { Address, isAddress, zeroAddress } from "viem";
 import {
   Dialog,
   DialogContent,
@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/dialog";
 import { useTicketForm, type TicketFormData } from "./hooks/useTicketForm";
 
+import { useCreateTicketMultiAttestations } from "@/hooks/useCreateTicketMultiAttestations";
+
 import {
   AssignTicketText,
   CloseDialogButton,
   TriggerDialogButton,
 } from "./components/ModalComponents";
 
-export function Modal() {
+export function Modal({ eventId }: { eventId: string }) {
   const [open, setOpen] = useState(false);
+  const createTicketMultiAttestations = useCreateTicketMultiAttestations();
 
   const {
     register,
@@ -29,11 +32,20 @@ export function Modal() {
   } = useTicketForm();
 
   function submitForm(data: TicketFormData) {
-    const filteredData = data.addresses.filter(
+    const nonEmptyAddresses = data.addresses.filter(
       (element) => element.address !== ""
     );
-    console.log("Form submitted with data:", filteredData);
+    console.log("Form submitted with data:", nonEmptyAddresses);
     setOpen(false);
+
+    const tickets = nonEmptyAddresses.map((element) => {
+      return {
+        owner: element.address as Address,
+        eventId: eventId,
+      };
+    });
+
+    createTicketMultiAttestations({ tickets: tickets });
   }
 
   return (
