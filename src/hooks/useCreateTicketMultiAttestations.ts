@@ -55,12 +55,13 @@ export const useCreateTicketMultiAttestations = () => {
         ]);
       });
 
-      const multiData = multiEncodedData.map((encodedData) => {
+      const multiData = multiEncodedData.map((encodedData, index) => {
         return {
-          recipient: zeroAddress,
+          recipient: tickets[index].owner,
           expirationTime: BigInt(0),
           revocable: true,
           data: encodedData,
+          refUID: tickets[index].eventId,
         };
       });
 

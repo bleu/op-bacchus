@@ -45,6 +45,8 @@ export function Modal({ eventId }: { eventId: string }) {
       };
     });
 
+    console.log("Attesting tickets", tickets);
+
     createTicketMultiAttestations({ tickets: tickets });
   }
 
