@@ -50,19 +50,18 @@ export function Modal() {
     setOpen(false);
   }
 
-  function handleNumberOfFields() {
+  const handleNumberOfFields = useCallback(() => {
     const lastElement = watchedFields[watchedFields.length - 1];
     if (isAddress(lastElement?.address)) {
       append({ address: "" });
     }
-
     const emptyElements = watchedFields
       .map((field, index) => (field.address === "" ? index : -1))
       .filter((index) => index !== -1);
     if (emptyElements.length > 1) {
       remove(emptyElements[0]);
     }
-  }
+  }, [watchedFields, append, remove]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
