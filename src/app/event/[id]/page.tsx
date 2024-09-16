@@ -1,21 +1,22 @@
 "use client";
 
-import { useSigner } from "@/hooks/useSigner";
 import { GET_ATTESTATION_BY_ID_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { useChainId } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { useMemo } from "react";
 import { parseEventsData } from "../../events/parseEventsData";
 import { format } from "date-fns";
+
+import { Modal } from "../Modal";
+
 import {
-  AssignTicketButton,
   EventInfoContainer,
   StatusFlag,
   Ticket,
   TicketInfoContainer,
   TicketInfoHeaderContainer,
-} from "../components";
+} from "../components/PageComponents";
 import { Calendar } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -28,14 +29,13 @@ const ticketAddresses = [
 export default function Page({ params }: { params: { id: string } }) {
   const eventId = params.id;
 
-  const signer = useSigner();
+  const account = useAccount();
   const chainId = useChainId();
 
   const [result] = useQuery({
     query: GET_ATTESTATION_BY_ID_QUERY,
     variables: { id: eventId },
     context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
-    pause: !signer,
   });
 
   const { data, fetching, error } = result;
@@ -46,6 +46,8 @@ export default function Page({ params }: { params: { id: string } }) {
     [data?.attestation]
   );
 
+  if (!account) return <p>Please connect wallet to load the informations...</p>;
+
   if (parsedData === undefined) return <p>loading...</p>;
 
   if (parsedData === null)
@@ -55,6 +57,8 @@ export default function Page({ params }: { params: { id: string } }) {
     new Date(parsedData.startsAt),
     "d, MMMM, yyyy 'at' ha."
   );
+
+  const userIsOwner = account.address === parsedData.owner;
 
   return (
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
@@ -89,7 +93,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 Tickets
               </TabsTrigger>
             </TabsList>
-            <AssignTicketButton />
+            {userIsOwner ? <Modal /> : undefined}
           </TicketInfoHeaderContainer>
           <TabsContent value="about">
             <span>Description</span>: {parsedData.fullDescription}

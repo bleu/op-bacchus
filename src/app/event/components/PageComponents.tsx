@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { MaterialSymbol } from "react-material-symbols";
 
 export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
@@ -29,15 +28,6 @@ export const TicketInfoHeaderContainer = ({
     <div className="flex items-center justify-between w-full border-b-2 pb-2">
       {children}
     </div>
-  );
-};
-
-export const AssignTicketButton = () => {
-  return (
-    <button className="flex justify-center items-center bg-red-600 text-white rounded-xl px-3 py-3 gap-2 hover:bg-red-800">
-      <MaterialSymbol icon="assignment_ind" size={20} />
-      <span className="text-sm">Assign Ticket</span>
-    </button>
   );
 };
 
