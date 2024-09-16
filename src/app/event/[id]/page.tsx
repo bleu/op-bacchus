@@ -15,7 +15,7 @@ import {
   Ticket,
   TicketInfoContainer,
   TicketInfoHeaderContainer,
-} from "../components";
+} from "../components/PageComponents";
 import { Calendar } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
