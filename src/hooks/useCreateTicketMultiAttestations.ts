@@ -36,8 +36,6 @@ export const useCreateTicketMultiAttestations = () => {
     }
   }, [signer]);
 
-  console.log(CREATE_TICKET_SCHEMA_UID);
-
   const createTicketMultiAttestations = useCallback(
     async ({ tickets }: { tickets: Ticket[] }) => {
       if (!eas) throw new Error("EAS not initialized");

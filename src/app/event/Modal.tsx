@@ -20,6 +20,7 @@ import {
 
 export function Modal({ eventId }: { eventId: string }) {
   const [open, setOpen] = useState(false);
+  const createTicketMultiAttestations = useCreateTicketMultiAttestations();
 
   const {
     register,
