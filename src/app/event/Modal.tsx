@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useTicketForm, type TicketFormData } from "./hooks/useTicketForm";
 
 import {
   AssignTicketText,
@@ -16,52 +16,25 @@ import {
   TriggerDialogButton,
 } from "./components/ModalComponents";
 
-interface FormData {
-  addresses: { address: string }[];
-}
-
 export function Modal() {
   const [open, setOpen] = useState(false);
+
   const {
     register,
-    control,
+    fields,
+    errors,
+    isValid,
     handleSubmit,
-    watch,
-    formState: { errors, isValid },
-  } = useForm<FormData>({
-    defaultValues: {
-      addresses: [{ address: "" }],
-    },
-    mode: "onChange",
-  });
+    handleNumberOfFields,
+  } = useTicketForm();
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "addresses",
-  });
-
-  const watchedFields = watch("addresses");
-
-  function submitForm(data: FormData) {
+  function submitForm(data: TicketFormData) {
     const filteredData = data.addresses.filter(
       (element) => element.address !== ""
     );
     console.log("Form submitted with data:", filteredData);
     setOpen(false);
   }
-
-  const handleNumberOfFields = useCallback(() => {
-    const lastElement = watchedFields[watchedFields.length - 1];
-    if (isAddress(lastElement?.address)) {
-      append({ address: "" });
-    }
-    const emptyElements = watchedFields
-      .map((field, index) => (field.address === "" ? index : -1))
-      .filter((index) => index !== -1);
-    if (emptyElements.length > 1) {
-      remove(emptyElements[0]);
-    }
-  }, [watchedFields, append, remove]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -88,7 +61,8 @@ export function Modal() {
                   <input
                     type="text"
                     placeholder="0xabc..."
-                    className="p-3 rounded-lg bg-slate-200 mb-1 w-[500px] mr-16 text-slate-700 text-lg"
+                    aria-label="wallet address"
+                    className="p-3 rounded-lg bg-slate-200 mb-1 w-[500px] text-slate-700 text-lg"
                     {...register(`addresses.${index}.address`, {
                       validate: (value) => {
                         if (value === "") return true;
