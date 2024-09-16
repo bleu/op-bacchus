@@ -1,25 +1,12 @@
 "use client";
 import { useSigner } from "@/hooks/useSigner";
-import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import { EVENTS_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useQuery } from "urql";
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
+import { API_URL_MAPPING, EVENT_SCHEMA_ID } from "@/lib/gqlEasAttestation";
 import { useChainId } from "wagmi";
 import { parseEventsData } from "./events/parseEventsData";
-import { fromUnixTime, format } from "date-fns";
-import { enUS } from "date-fns/locale";
 import React, { useState, useMemo } from "react";
-
-function epochToCustomDate(epoch: number): string {
-	try {
-		const epochInSeconds = epoch.toString().length > 10 ? epoch / 1000 : epoch;
-
-		const date = fromUnixTime(epochInSeconds);
-
-		return format(date, "d, MMMM 'of' yyyy", { locale: enUS });
-	} catch (error) {
-		return "Invalid Date";
-	}
-}
+import { AttestationItem, sortByStartsAt } from "./events/page";
 
 interface DataEntry {
 	attester: string;
@@ -33,22 +20,6 @@ interface DataEntry {
 	revocationTime: number;
 }
 
-function sortByStartsAt(data: DataEntry[]): DataEntry[] {
-	return data.sort((a, b) => {
-		const aDecoded = JSON.parse(a.decodedDataJson);
-		const bDecoded = JSON.parse(b.decodedDataJson);
-
-		const aStartsAt = aDecoded.find((item: any) => item.name === "startsAt")
-			?.value.value.hex;
-		const bStartsAt = bDecoded.find((item: any) => item.name === "startsAt")
-			?.value.value.hex;
-
-		if (!aStartsAt || !bStartsAt) return 0;
-
-		return parseInt(aStartsAt, 16) - parseInt(bStartsAt, 16);
-	});
-}
-
 export default function Events() {
 	const signer = useSigner();
 	const chainId = useChainId();
@@ -56,8 +27,8 @@ export default function Events() {
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const [result] = useQuery({
-		query: USER_ATTESTATIONS_QUERY,
-		variables: { attester },
+		query: EVENTS_ATTESTATIONS_QUERY,
+		variables: { schemaId: EVENT_SCHEMA_ID },
 		context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
 		pause: !signer,
 	});
@@ -67,30 +38,35 @@ export default function Events() {
 	const filteredAttestations = useMemo(() => {
 		if (!data?.attestations) return [];
 		const currentTime = Date.now();
-	  
+
 		return sortByStartsAt(data.attestations).filter((attestation) => {
-		  const decodedData = JSON.parse(attestation.decodedDataJson);
-		  const parsedData = parseEventsData(attestation.decodedDataJson);
-		  
-		  // Filter out past events
-		  if (parsedData.startsAt <= currentTime) {
-			return false;
-		  }
-		  
-		  const searchableFields = ['name', 'briefDescription', 'fullDescription'];
-		  const searchableText = searchableFields
-			.map(field => decodedData.find((item: any) => item.name === field)?.value?.value || '')
-			.join(' ')
-			.toLowerCase();
-		
-		  return searchableText.includes(searchTerm.toLowerCase());
+			const decodedData = JSON.parse(attestation.decodedDataJson);
+			const parsedData = parseEventsData(attestation.decodedDataJson);
+
+			// Filter out past events
+			if (parsedData.endsAt <= currentTime) {
+				return false;
+			}
+
+			const searchableFields = ["name", "briefDescription", "fullDescription"];
+			const searchableText = searchableFields
+				.map(
+					(field) =>
+						decodedData.find((item: any) => item.name === field)?.value
+							?.value || "",
+				)
+				.join(" ")
+				.toLowerCase();
+
+			return searchableText.includes(searchTerm.toLowerCase());
 		});
-	  }, [data?.attestations, searchTerm]);
+	}, [data?.attestations, searchTerm]);
 
 	const attestationList = useMemo(
 		() =>
 			filteredAttestations.map((attestation) => (
 				<AttestationItem
+					id={attestation.id}
 					key={attestation.id}
 					data={attestation.decodedDataJson}
 				/>
@@ -115,7 +91,7 @@ export default function Events() {
 	}
 
 	return (
-		<>
+		<div className="mx-20">
 			<h1 className="text-3xl sm:text-4xl md:text-5xl font-bold my-12 text-center">
 				Explore Your Next Event
 			</h1>
@@ -134,7 +110,7 @@ export default function Events() {
 			</form>
 
 			{attestationList.length > 0 ? (
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-10 w-full gap-y-12">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
 					{attestationList}
 				</div>
 			) : (
@@ -142,38 +118,6 @@ export default function Events() {
 					No events found matching your search.
 				</div>
 			)}
-		</>
-	);
-}
-
-function AttestationItem({ data }: { data: any }) {
-	const parsedData = parseEventsData(data);
-
-	return (
-		<div
-			key="Event"
-			className="border-2 rounded-lg w-[80vw] sm:w-[70vw] md:w-[50vw] lg:w-[25vw] h-auto gap-6 justify-self-center"
-			>
-			<div className="p-3">
-				<h2 className="text-base font-bold">{parsedData.name}</h2>
-				<p className="text-xs">{epochToCustomDate(parsedData.startsAt)}</p>
-			</div>
-			<div>
-				<img
-					className="w-full h-32"
-					alt="Template image"
-					src={parsedData.imageUrl}
-				/>
-			</div>
-			<div className="p-3">
-				<p className="text-xs text-gray-700 mb-4">
-					Brief description: {parsedData.briefDescription}
-				</p>
-				<span className="text-xs bg-gray-100 px-2 py-1 rounded-lg inline-block">
-					Status: published
-				</span>
-			</div>
 		</div>
 	);
 }
-
