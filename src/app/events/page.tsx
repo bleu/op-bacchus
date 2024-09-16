@@ -58,7 +58,7 @@ export default function Events() {
   const attester = signer?.address || "";
   const [result] = useQuery({
     query: USER_ATTESTATIONS_QUERY,
-    variables: { attester },
+		variables: { attester, schemaId: EVENT_SCHEMA_ID },
     context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
     pause: !signer,
   });
