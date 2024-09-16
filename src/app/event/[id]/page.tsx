@@ -93,7 +93,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 Tickets
               </TabsTrigger>
             </TabsList>
-            {userIsOwner ? <Modal /> : undefined}
+            {userIsOwner ? <Modal eventId={eventId} /> : undefined}
           </TicketInfoHeaderContainer>
           <TabsContent value="about">
             <span>Description</span>: {parsedData.fullDescription}
