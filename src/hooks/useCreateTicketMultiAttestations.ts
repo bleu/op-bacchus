@@ -6,7 +6,7 @@ import type { Address } from "viem";
 
 const CREATE_TICKET_SCHEMA = "address owner, string eventId";
 
-const CREATE_TICKET_SCHEMA_UID = keccak256(
+export const CREATE_TICKET_SCHEMA_UID = keccak256(
   encodePacked(
     ["string", "address", "bool"],
     [CREATE_TICKET_SCHEMA, zeroAddress, true]
