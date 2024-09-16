@@ -3,25 +3,21 @@ import { MaterialSymbol } from "react-material-symbols";
 
 export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="w-1150px block py-4 px-8 border-2 rounded-3xl">
-      {children}
-    </div>
+    <div className="w-full block p-8 border-2 rounded-3xl">{children}</div>
   );
 };
 
 export const StatusFlag = () => {
   return (
     <div className="flex w-fit justify-center items-center gap-2 bg-slate-200 py-1 px-3 rounded-lg mb-4">
-      <div className="w-3 h-3 rounded-md bg-slate-400"></div>
+      <div className="w-3 h-3 rounded-md bg-[#B2CC99]"></div>
       <span>Published</span>
     </div>
   );
 };
 
 export const TicketInfoContainer = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="w-1150px py-12 px-12 border-2 rounded-3xl">{children}</div>
-  );
+  return <div className="w-full p-8 border-2 rounded-3xl">{children}</div>;
 };
 
 export const TicketInfoHeaderContainer = ({
@@ -39,8 +35,8 @@ export const TicketInfoHeaderContainer = ({
 export const AssignTicketButton = () => {
   return (
     <button className="flex justify-center items-center bg-red-600 text-white rounded-xl px-3 py-3 gap-2 hover:bg-red-800">
-      <MaterialSymbol icon="assignment_ind" size={24} />
-      <span>Assign Ticket</span>
+      <MaterialSymbol icon="assignment_ind" size={20} />
+      <span className="text-sm">Assign Ticket</span>
     </button>
   );
 };
