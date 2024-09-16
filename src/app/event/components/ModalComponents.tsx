@@ -22,7 +22,7 @@ export const TriggerDialogButton = ({ ...props }) => {
 };
 
 export const CloseDialogButton = ({ ...props }) => {
-  const isValid = props.isValid;
+  const { isValid } = props;
   return (
     <button
       type="submit"
