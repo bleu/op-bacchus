@@ -28,6 +28,7 @@ export const GET_ATTESTATION_BY_ID_QUERY = graphql(`
       expirationTime
       data
       decodedDataJson
+      timeCreated
     }
   }
 `);

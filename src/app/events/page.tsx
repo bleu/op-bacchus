@@ -5,8 +5,50 @@ import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { useChainId } from "wagmi";
 import { useMemo } from "react";
+import { fromUnixTime, format } from "date-fns";
+import { enUS } from "date-fns/locale";
 import { parseEventsData } from "./parseEventsData";
 import Link from "next/link";
+
+function epochToCustomDate(epoch: number): string {
+  try {
+    const epochInSeconds = epoch.toString().length > 10 ? epoch / 1000 : epoch;
+
+    const date = fromUnixTime(epochInSeconds);
+
+    return format(date, "d, MMMM 'of' yyyy", { locale: enUS });
+  } catch (error) {
+    return "Invalid Date";
+  }
+}
+
+interface DataEntry {
+  attester: string;
+  data: string;
+  decodedDataJson: string;
+  expirationTime: number;
+  id: string;
+  recipient: string;
+  refUID: string;
+  revocable: boolean;
+  revocationTime: number;
+}
+
+function sortByStartsAt(data: DataEntry[]): DataEntry[] {
+  return data.sort((a, b) => {
+    const aDecoded = JSON.parse(a.decodedDataJson);
+    const bDecoded = JSON.parse(b.decodedDataJson);
+
+    const aStartsAt = aDecoded.find((item: any) => item.name === "startsAt")
+      ?.value.value.hex;
+    const bStartsAt = bDecoded.find((item: any) => item.name === "startsAt")
+      ?.value.value.hex;
+
+    if (!aStartsAt || !bStartsAt) return 0;
+
+    return parseInt(aStartsAt, 16) - parseInt(bStartsAt, 16);
+  });
+}
 
 export default function Events() {
   const signer = useSigner();
@@ -26,11 +68,11 @@ export default function Events() {
   const attestationList = useMemo(
     () =>
       data?.attestations &&
-      data.attestations.map((data: any) => (
+      sortByStartsAt(data.attestations).map((attestation) => (
         <AttestationItem
-          key={data.id}
-          id={data.id}
-          data={data.decodedDataJson}
+          key={attestation.id}
+          id={attestation.id}
+          data={attestation.decodedDataJson}
         />
       )),
     [data?.attestations]
@@ -81,7 +123,6 @@ function AttestationItem({ id, data }: { id: string; data: any }) {
           Full description: {parsedData.fullDescription}
         </h2>
       </div>
-      {/* </div> */}
     </Link>
   );
 }
