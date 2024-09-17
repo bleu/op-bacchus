@@ -80,6 +80,8 @@ export default function Events() {
 		[filteredAttestations],
 	);
 
+	console.log(attestationList)
+
 	const [ticketsResult] = useQuery({
 		query: TICKET_BY_RECIPIENT_QUERY,
 		variables: { recipient, schemaId: CREATE_TICKET_SCHEMA_UID },
@@ -93,15 +95,13 @@ export default function Events() {
 		error: ticketsError,
 	} = ticketsResult;
 
-	console.log(ticketsResult);
-
-	const ticketList = useMemo(
-		() =>
-			ticketsData?.attestations?.map((ticket) => {
-				return <TicketItem key={ticket.id} ticket={ticket} />;
-			}) || [],
-		[ticketsData?.attestations],
-	);
+	// const ticketList = useMemo(
+	// 	() =>
+	// 		ticketsData?.attestations?.map((ticket) => {
+	// 			return <TicketItem key={ticket.id} ticket={ticket} />;
+	// 		}) || [],
+	// 	[ticketsData?.attestations],
+	// );
 
 	  const { processedInvitations, invitationIdentifiers } = useMemo(() => {
 		if (!ticketsData || !ticketsData.attestations) {
@@ -139,7 +139,6 @@ export default function Events() {
 		error: tickets_Error,
 	} = ticket_events_result;
 
-
 	const filteredTickets = useMemo(() => {
 		if (!tickets_Data?.attestations) return [];
 		return tickets_Data.attestations.filter((ticket) => {
@@ -153,7 +152,7 @@ export default function Events() {
 	  const ticket_List = useMemo(
 		() =>
 		  filteredTickets.map((ticket) => (
-			<TicketItem
+			<EventItem
 			  key={ticket.id}
 			  data={ticket.decodedDataJson}
 			/>
@@ -161,12 +160,18 @@ export default function Events() {
 		[filteredTickets],
 	  );
 
+	  console.log(ticket_List)
+
 	const handleSearch = (e) => {
 		setSearchTerm(e.target.value);
 	};
 
 	if (!signer) {
 		return <div>Connect a wallet to view your attestations.</div>;
+	}
+
+	if (!ticket_List) {
+		return <div>Loading attestation data...</div>;
 	}
 
 	if (!data) {
@@ -231,11 +236,11 @@ export default function Events() {
 			</div>
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-y-12">
-				{ticketList.length > 0 ? (
-					ticketList
+			{ticket_List.length > 0 ? (
+					attestationList
 				) : (
 					<div className="col-span-full text-center text-gray-500">
-						No invitations found.
+						You have not been invited to any events.
 					</div>
 				)}
 			</div>
@@ -282,8 +287,9 @@ function AttestationItem({ data }: { data: any }) {
 	);
 }
 
-function TicketItem({ ticket }: { ticket: any }) {
-	const parsedData = parseEventsData(ticket.decodedDataJson);
+function EventItem({ ticket }: { ticket: any }) {
+
+	const parsedData = parseEventsData(ticket);
 	const eventDate = new Date(parsedData.startsAt);
 	const isEventPast = isPast(eventDate);
 	const statusText = isEventPast ? "Finished" : "Published";
