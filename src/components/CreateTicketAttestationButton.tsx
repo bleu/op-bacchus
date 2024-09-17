@@ -1,10 +1,8 @@
+import { toast } from "react-toastify";
+import { useQuery } from "urql";
+import { useAccount } from "wagmi";
 import { useCreateTicketAttestation } from "../hooks/useCreateTicketAttestation";
 import type { Ticket } from "../hooks/useCreateTicketAttestation";
-import { toast } from "react-toastify";
-import { useAccount } from "wagmi";
-import { useQuery } from 'urql';
-
-
 
 const ATTESTATION_QUERY = `
   query GetLatestAttestation($address: String!) {
@@ -20,24 +18,20 @@ const ATTESTATION_QUERY = `
   }
 `;
 
-
 export function CreateTicketAttestationButton() {
 	const createTicketAttestation = useCreateTicketAttestation();
-  const { address } = useAccount();
+	const { address } = useAccount();
 
+	const [result] = useQuery({
+		query: ATTESTATION_QUERY,
+		variables: { address },
+		pause: !address,
+	});
 
-  const [result] = useQuery({
-    query: ATTESTATION_QUERY,
-    variables: { address },
-    pause: !address,
-  });
-
-  const newTicket = {
-    owner: address || '',
-    eventid: result.data?.attestations[0]?.id,
-  } as Ticket;
-
-
+	const newTicket = {
+		owner: address || "",
+		eventid: result.data?.attestations[0]?.id,
+	} as Ticket;
 
 	async function handleCreateTicketAttestation() {
 		await createTicketAttestation({ ticket: newTicket }).catch((error) => {
