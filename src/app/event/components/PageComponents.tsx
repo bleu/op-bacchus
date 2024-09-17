@@ -19,13 +19,13 @@ export const StatusFlag = () => {
   );
 };
 
-const TicketInfoContainer = ({ children }: { children: ReactNode }) => {
+const OtherInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
     <div className="w-full p-8 border-2 rounded-3xl mb-96">{children}</div>
   );
 };
 
-const TicketInfoHeaderContainer = ({ children }: { children: ReactNode }) => {
+const OtherInfoHeaderContainer = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex items-center justify-between w-full border-b-2 pb-2">
       {children}
@@ -33,7 +33,7 @@ const TicketInfoHeaderContainer = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const Ticket = ({ address }: { address: string }) => {
+const TicketAddress = ({ address }: { address: string }) => {
   return (
     <p className="p-3 rounded-lg bg-slate-200 my-4 w-[600px] text-lg text-slate-700">
       {address}
@@ -41,46 +41,58 @@ const Ticket = ({ address }: { address: string }) => {
   );
 };
 
-export const TicketOwnerManagementSection = ({
+const tabTriggerClassName =
+  "rounded-none border-b data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-600 hover:border-red-300 hover:border-b-2";
+export const OtherInfoSection = ({
   eventId,
   eventData,
   ticketAddresses,
+  userIsEventOwner,
+  userHasTicket,
 }: {
   eventId: string;
   eventData: Event | null | undefined;
   ticketAddresses: Address[];
+  userIsEventOwner: boolean;
+  userHasTicket: boolean;
 }) => {
   return (
-    <TicketInfoContainer>
+    <OtherInfoContainer>
       <Tabs defaultValue="about">
-        <TicketInfoHeaderContainer>
+        <OtherInfoHeaderContainer>
           <TabsList>
-            <TabsTrigger
-              value="about"
-              className="rounded-none border-b data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-600"
-            >
+            <TabsTrigger value="about" className={tabTriggerClassName}>
               About
             </TabsTrigger>
-            <TabsTrigger
-              value="tickets"
-              className="rounded-none border-b data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-600"
-            >
-              Tickets
-            </TabsTrigger>
+            {userIsEventOwner ? (
+              <TabsTrigger value="tickets" className={tabTriggerClassName}>
+                Tickets
+              </TabsTrigger>
+            ) : undefined}
+            {userHasTicket ? (
+              <TabsTrigger value="myTicket" className={tabTriggerClassName}>
+                My Ticket
+              </TabsTrigger>
+            ) : undefined}
           </TabsList>
           <Modal eventId={eventId} />
-        </TicketInfoHeaderContainer>
+        </OtherInfoHeaderContainer>
         <TabsContent value="about">
           <span>Description</span>: {eventData!.fullDescription}
         </TabsContent>
         <TabsContent value="tickets">
           <div className="block mt-4">
             {ticketAddresses.map((address) => {
-              return <Ticket key={address} address={address} />;
+              return <TicketAddress key={address} address={address} />;
             })}
           </div>
         </TabsContent>
+        <TabsContent value="myTicket">
+          <div className="block mt-4">
+            <h1>My ticket</h1>
+          </div>
+        </TabsContent>
       </Tabs>
-    </TicketInfoContainer>
+    </OtherInfoContainer>
   );
 };
