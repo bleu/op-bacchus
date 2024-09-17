@@ -61,6 +61,7 @@ export const GET_TICKETS_BY_EVENT_QUERY = graphql(`
       decodedDataJson
       recipient
       refUID
+      revoked
     }
   }
 `);

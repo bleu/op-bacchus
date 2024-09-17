@@ -2,7 +2,7 @@ import { GET_TICKETS_BY_EVENT_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useQuery } from "urql";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { useMemo } from "react";
-import { useChainId } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { parseEventsData } from "@/app/events/parseEventsData";
 import { CREATE_TICKET_SCHEMA_UID } from "@/hooks/useCreateTicketMultiAttestations";
 import type { Event } from "@/hooks/useCreateEventAttestation";
@@ -15,6 +15,7 @@ export const useTicketAddresses = ({
   eventData: Event | null | undefined;
 }) => {
   const chainId = useChainId();
+  const account = useAccount();
   const [result] = useQuery({
     query: GET_TICKETS_BY_EVENT_QUERY,
     variables: { schemaId: CREATE_TICKET_SCHEMA_UID, eventId },
@@ -33,6 +34,20 @@ export const useTicketAddresses = ({
     [data?.attestations]
   );
 
+  const userHasTicket =
+    account.address && ticketAddresses
+      ? ticketAddresses.includes(account.address)
+      : false;
+
+  const userTicket = useMemo(
+    () =>
+      data?.attestations &&
+      data.attestations.filter(
+        (ticket) => ticket.recipient === account.address
+      )[0],
+    [data?.attestations, account]
+  );
+
   // WILL BE USED IN THE FUTURE
   // const ticketsInternalData = useMemo(
   //   () =>
@@ -40,5 +55,5 @@ export const useTicketAddresses = ({
   //   [data?.attestations]
   // );
 
-  return { ticketAddresses, fetching, error };
+  return { ticketAddresses, fetching, error, userHasTicket, userTicket };
 };

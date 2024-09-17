@@ -31,7 +31,10 @@ export default function Page({ params }: { params: { id: string } }) {
       eventData?.attestation && parseEventsData(eventData.attestation?.decodedDataJson),
     [eventData?.attestation],
   );
-  const { ticketAddresses } = useTicketAddresses({ eventId, eventData });
+  const { ticketAddresses, userHasTicket, userTicket } = useTicketAddresses({
+    eventId,
+    eventData,
+  });
 
   if (!account) return <p>Please connect wallet to load the informations...</p>;
 
@@ -49,13 +52,8 @@ export default function Page({ params }: { params: { id: string } }) {
     new Date(parsedData.endsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
-  const userIsOwner = account.address === parsedData.owner;
   if (ticketAddresses === undefined) return <p>Loading...</p>;
   const userIsEventOwner = account.address === eventData.owner;
-
-  const userHasTicket = account.address
-    ? ticketAddresses.includes(account.address)
-    : false;
 
   return (
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
@@ -81,6 +79,7 @@ export default function Page({ params }: { params: { id: string } }) {
         ticketAddresses={ticketAddresses as Address[]}
         userIsEventOwner={userIsEventOwner}
         userHasTicket={userHasTicket}
+        userTicket={userTicket}
       />
     </main>
   );

@@ -1,8 +1,9 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Modal } from "../Modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import type { Address } from "viem";
+import { UserTicket, type TicketInfoType } from "./UserTicket";
 
 export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (
@@ -49,12 +50,14 @@ export const OtherInfoSection = ({
   ticketAddresses,
   userIsEventOwner,
   userHasTicket,
+  userTicket,
 }: {
   eventId: string;
   eventData: Event | null | undefined;
   ticketAddresses: Address[];
   userIsEventOwner: boolean;
   userHasTicket: boolean;
+  userTicket: TicketInfoType;
 }) => {
   return (
     <OtherInfoContainer>
@@ -80,18 +83,20 @@ export const OtherInfoSection = ({
         <TabsContent value="about">
           <span>Description</span>: {eventData!.fullDescription}
         </TabsContent>
-        <TabsContent value="tickets">
-          <div className="block mt-4">
-            {ticketAddresses.map((address) => {
-              return <TicketAddress key={address} address={address} />;
-            })}
-          </div>
-        </TabsContent>
-        <TabsContent value="myTicket">
-          <div className="block mt-4">
-            <h1>My ticket</h1>
-          </div>
-        </TabsContent>
+        {userIsEventOwner ? (
+          <TabsContent value="tickets">
+            <div className="block mt-4">
+              {ticketAddresses.map((address) => {
+                return <TicketAddress key={address} address={address} />;
+              })}
+            </div>
+          </TabsContent>
+        ) : undefined}
+        {userHasTicket ? (
+          <TabsContent value="myTicket">
+            <UserTicket eventData={eventData} userTicket={userTicket} />
+          </TabsContent>
+        ) : undefined}
       </Tabs>
     </OtherInfoContainer>
   );
