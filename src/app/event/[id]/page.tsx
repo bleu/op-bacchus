@@ -7,7 +7,7 @@ import { parseEventsData } from "../../events/parseEventsData";
 import {
   EventInfoContainer,
   StatusFlag,
-  TicketOwnerManagementSection,
+  OtherInfoSection,
 } from "../components/PageComponents";
 import { Calendar } from "lucide-react";
 import { useEventData } from "../hooks/useEventData";
@@ -51,6 +51,11 @@ export default function Page({ params }: { params: { id: string } }) {
   );
   const userIsOwner = account.address === parsedData.owner;
   if (ticketAddresses === undefined) return <p>Loading...</p>;
+  const userIsEventOwner = account.address === eventData.owner;
+
+  const userHasTicket = account.address
+    ? ticketAddresses.includes(account.address)
+    : false;
 
   return (
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
@@ -70,13 +75,13 @@ export default function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
       </EventInfoContainer>
-      {userIsOwner ? (
-        <TicketOwnerManagementSection
-          eventId={eventId}
-          eventData={eventData}
-          ticketAddresses={ticketAddresses as Address[]}
-        />
-      ) : undefined}
+      <OtherInfoSection
+        eventId={eventId}
+        eventData={eventData}
+        ticketAddresses={ticketAddresses as Address[]}
+        userIsEventOwner={userIsEventOwner}
+        userHasTicket={userHasTicket}
+      />
     </main>
   );
 }
