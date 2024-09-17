@@ -24,7 +24,10 @@ export default function Page({ params }: { params: { id: string } }) {
     error: errorEvent,
   } = useEventData({ eventId });
 
-  const { ticketAddresses } = useTicketAddresses({ eventId, eventData });
+  const { ticketAddresses, userHasTicket, userTicket } = useTicketAddresses({
+    eventId,
+    eventData,
+  });
 
   if (!account) return <p>Please connect wallet to load the informations...</p>;
 
@@ -41,10 +44,6 @@ export default function Page({ params }: { params: { id: string } }) {
   );
 
   const userIsEventOwner = account.address === eventData.owner;
-
-  const userHasTicket = account.address
-    ? ticketAddresses.includes(account.address)
-    : false;
 
   return (
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
@@ -68,6 +67,7 @@ export default function Page({ params }: { params: { id: string } }) {
         ticketAddresses={ticketAddresses as Address[]}
         userIsEventOwner={userIsEventOwner}
         userHasTicket={userHasTicket}
+        userTicket={userTicket}
       />
     </main>
   );
