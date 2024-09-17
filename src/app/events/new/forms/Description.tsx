@@ -1,10 +1,11 @@
-import { ReactNode, useContext, useState } from "react";
-import { NewEventContext } from "../page";
+import { type ReactNode, useContext, useState } from "react";
+
 import { FormContainer } from "../components/FormContainer";
 import { FormField } from "../components/FormField";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z, ZodType } from "zod";
+import { z, type ZodType } from "zod";
+import { NewEventContext } from "@/contexts/event";
 
 export interface DescriptionFormData {
   briefDescription: string;

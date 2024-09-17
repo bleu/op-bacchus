@@ -9,25 +9,9 @@ import type { Event } from "@/hooks/useCreateEventAttestation";
 import { useAccount } from "wagmi";
 import type { OverviewFormData } from "./forms/Overview";
 import type { DescriptionFormData } from "./forms/Description";
+import { NewEventContext, type NewEventType } from "@/contexts/event";
 
 type StepType = "Overview" | "Description" | "Tickets" | "Confirm";
-interface NewEventType {
-  owner: string | undefined;
-  name: string | undefined;
-  briefDescription: string | undefined;
-  fullDescription: string | undefined;
-  startsAt: number | undefined;
-  endsAt: number | undefined;
-  type: "online" | "inPerson" | undefined;
-  imageUrl: string | undefined;
-}
-
-interface NewEventContextInterface {
-  handleContinue: (formData: OverviewFormData | DescriptionFormData) => void;
-  updateEvent: (updateEventValues: Partial<NewEventType>) => void;
-}
-
-export const NewEventContext = createContext({} as NewEventContextInterface);
 
 export default function CreateEvent() {
   const [step, setStep] = useState<StepType>("Overview");
