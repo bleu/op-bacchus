@@ -1,19 +1,19 @@
 "use client";
+import { CREATE_TICKET_SCHEMA_UID } from "@/components/CreateTicketSchemaButton";
 import { useSigner } from "@/hooks/useSigner";
+import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import {
+	GET_ATTESTATION_BY_ID_QUERY,
 	TICKET_BY_RECIPIENT_QUERY,
 	USER_ATTESTATIONS_QUERY,
-	GET_ATTESTATION_BY_ID_QUERY
 } from "@/lib/gqlEasAttestation/query";
-import { useQuery } from "urql";
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { useChainId } from "wagmi";
-import { useMemo, useState } from "react";
-import { fromUnixTime, format, isPast } from "date-fns";
+import { format, fromUnixTime, isPast } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { parseEventsData } from "./parseEventsData";
 import Link from "next/link";
-import { CREATE_TICKET_SCHEMA_UID } from "@/components/CreateTicketSchemaButton";
+import { useMemo, useState } from "react";
+import { useQuery } from "urql";
+import { useChainId } from "wagmi";
+import { parseEventsData } from "./parseEventsData";
 
 function epochToCustomDate(epoch: number): string {
 	try {
@@ -80,11 +80,14 @@ export default function Events() {
 		[filteredAttestations],
 	);
 
-	console.log(attestationList)
-
 	const [ticketsResult] = useQuery({
 		query: TICKET_BY_RECIPIENT_QUERY,
-		variables: { recipient, schemaId: CREATE_TICKET_SCHEMA_UID },
+		variables: {
+			recipient,
+			schemaId:
+				"0x501782e3457c5477a7a36380b98398bd80dce95506f73595f70291a192d53b90",
+				//todo save this in a variable instead of being hardcoded
+		},
 		context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
 		pause: !signer,
 	});
@@ -95,72 +98,62 @@ export default function Events() {
 		error: ticketsError,
 	} = ticketsResult;
 
-	// const ticketList = useMemo(
-	// 	() =>
-	// 		ticketsData?.attestations?.map((ticket) => {
-	// 			return <TicketItem key={ticket.id} ticket={ticket} />;
-	// 		}) || [],
-	// 	[ticketsData?.attestations],
-	// );
-
-	  const { processedInvitations, invitationIdentifiers } = useMemo(() => {
+	const { processedInvitations, invitationIdentifiers } = useMemo(() => {
 		if (!ticketsData || !ticketsData.attestations) {
-		  return { processedInvitations: null, invitationIdentifiers: [] };
+			return { processedInvitations: null, invitationIdentifiers: [] };
 		}
-	
+
 		const validInvitations = ticketsData.attestations.filter(
-		  invitation => 
-			invitation !== undefined && 
-			invitation !== null &&
-			invitation.id !== undefined &&
-			invitation.id !== null &&
-			invitation.id !== ''
+			(invitation) =>
+				invitation !== undefined &&
+				invitation !== null &&
+				invitation.refUID !== undefined &&
+				invitation.refUID !== null &&
+				invitation.refUID !== "",
 		);
-	
-		const invitationIdentifiers = validInvitations.map(invitation => invitation.id);
-	
+
+		const invitationIdentifiers = validInvitations.map(
+			(invitation) => invitation.refUID,
+		);
+
 		return {
-		  processedInvitations: validInvitations.length > 0 ? { attestations: validInvitations } : null,
-		  invitationIdentifiers
+			processedInvitations:
+				validInvitations.length > 0 ? { attestations: validInvitations } : null,
+			invitationIdentifiers,
 		};
-	  }, [ticketsData]);
+	}, [ticketsData]);
 
-
-	  const [ticket_events_result] = useQuery({
+	const [ticket_events_result] = useQuery({
 		query: GET_ATTESTATION_BY_ID_QUERY,
-		variables: { ids:  invitationIdentifiers},
+		variables: { ids: invitationIdentifiers },
 		context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
 		pause: !signer,
 	});
 
 	const {
-		data: tickets_Data,
+		data: eventsWithTicketData,
 		fetching: tickets_Fetching,
 		error: tickets_Error,
 	} = ticket_events_result;
 
 	const filteredTickets = useMemo(() => {
-		if (!tickets_Data?.attestations) return [];
-		return tickets_Data.attestations.filter((ticket) => {
-		  const parsedData = parseEventsData(ticket.decodedDataJson);
-		  const searchableText =
-			`${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
-		  return searchableText.includes(searchTerm.toLowerCase());
+		if (!eventsWithTicketData?.attestations) return [];
+		return eventsWithTicketData.attestations.filter((ticket) => {
+			const parsedData = parseEventsData(ticket.decodedDataJson);
+			const searchableText =
+				`${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
+			return searchableText.includes(searchTerm.toLowerCase());
 		});
-	  }, [tickets_Data?.attestations, searchTerm]);
-	
-	  const ticket_List = useMemo(
-		() =>
-		  filteredTickets.map((ticket) => (
-			<EventItem
-			  key={ticket.id}
-			  data={ticket.decodedDataJson}
-			/>
-		  )),
-		[filteredTickets],
-	  );
+	}, [eventsWithTicketData?.attestations, searchTerm]);
 
-	  console.log(ticket_List)
+	const ticket_List = useMemo(
+		() =>
+			filteredTickets.map((ticket) => (
+				<AttestationItem key={ticket.id} data={ticket.decodedDataJson} />
+			)),
+		[filteredTickets],
+	);
+
 
 	const handleSearch = (e) => {
 		setSearchTerm(e.target.value);
@@ -236,8 +229,8 @@ export default function Events() {
 			</div>
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-y-12">
-			{ticket_List.length > 0 ? (
-					attestationList
+				{ticket_List.length > 0 ? (
+					ticket_List
 				) : (
 					<div className="col-span-full text-center text-gray-500">
 						You have not been invited to any events.
@@ -263,7 +256,9 @@ function AttestationItem({ data }: { data: any }) {
 			className="border-2 rounded-lg w-60 h-45 gap-6 justify-self-center"
 		>
 			<div className="p-3">
-				<h2 className="text-base font-bold">{parsedData.name || "Unnamed Event"}</h2>
+				<h2 className="text-base font-bold">
+					{parsedData.name || "Unnamed Event"}
+				</h2>
 				<p className="text-xs">{epochToCustomDate(parsedData.startsAt)}</p>
 			</div>
 			<div>
@@ -276,49 +271,6 @@ function AttestationItem({ data }: { data: any }) {
 			<div className="p-3">
 				<p className="text-xs text-gray-700 mb-4">
 					Brief description: {parsedData.briefDescription}
-				</p>
-				<span
-					className={`text-xs px-2 py-1 rounded-lg inline-block ${statusColor}`}
-				>
-					{statusText}
-				</span>
-			</div>
-		</div>
-	);
-}
-
-function EventItem({ ticket }: { ticket: any }) {
-
-	const parsedData = parseEventsData(ticket);
-	const eventDate = new Date(parsedData.startsAt);
-	const isEventPast = isPast(eventDate);
-	const statusText = isEventPast ? "Finished" : "Published";
-	const statusColor = isEventPast
-		? "bg-red-100 text-red-800"
-		: "bg-green-100 text-green-800";
-
-	return (
-		<div
-			key="Ticket"
-			className="border-2 rounded-lg w-60 h-45 gap-6 justify-self-center"
-		>
-			<div className="p-3">
-				<h2 className="text-base font-bold">
-					{parsedData.name || "Unnamed Event"}
-				</h2>
-				<p className="text-xs">{epochToCustomDate(parsedData.startsAt)}</p>
-			</div>
-			<div>
-				<img
-					className="w-full h-auto"
-					alt="Event image"
-					src={parsedData.imageUrl || "/placeholder-image.jpg"}
-				/>
-			</div>
-			<div className="p-3">
-				<p className="text-xs text-gray-700 mb-4">
-					Brief description:{" "}
-					{parsedData.briefDescription}
 				</p>
 				<span
 					className={`text-xs px-2 py-1 rounded-lg inline-block ${statusColor}`}
