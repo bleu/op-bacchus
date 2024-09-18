@@ -8,11 +8,12 @@ function ContinueButton({
   isContinueEnabled: boolean;
   handleContinue: () => void;
 }) {
+  console.log("isContinueEnabled", isContinueEnabled);
   return (
     <button
       className={clsx(
         "w-52 rounded-xl bg-slate-300 py-2 font-medium text-slate-600",
-        { isContinueEnabled: "hover:bg-red-400 hover:text-white" }
+        { "hover:bg-red-600 hover:text-white": isContinueEnabled }
       )}
       onClick={handleContinue}
       disabled={!isContinueEnabled}

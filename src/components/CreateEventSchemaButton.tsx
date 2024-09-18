@@ -1,15 +1,6 @@
 import { useRegistrySchema } from "@/hooks/useRegistrySchema";
-import { encodePacked, keccak256, zeroAddress } from "viem";
-
-export const CREATE_EVENT_SCHEMA =
-  "address owner, string name, string briefDescription, string fullDescription, string type, uint256 startsAt, uint256 endsAt, string imageUrl";
-
-export const CREATE_EVENT_SCHEMA_UID = keccak256(
-  encodePacked(
-    ["string", "address", "bool"],
-    [CREATE_EVENT_SCHEMA, zeroAddress, true]
-  )
-);
+import { zeroAddress } from "viem";
+import { CREATE_EVENT_SCHEMA } from "@/hooks/useCreateEventAttestation";
 
 export function CreateEventSchemaButton() {
   const registrySchema = useRegistrySchema();
