@@ -1,12 +1,18 @@
-import {
-  CREATE_EVENT_SCHEMA,
-  CREATE_EVENT_SCHEMA_UID,
-} from "@/components/CreateEventSchemaButton";
 import { useSigner } from "@/hooks/useSigner";
+import { encodePacked, keccak256, zeroAddress } from "viem";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
-import { zeroAddress } from "viem";
 import type { Address } from "viem";
+
+export const CREATE_EVENT_SCHEMA =
+  "address owner, string name, string briefDescription, string fullDescription, string type, uint256 startsAt, uint256 endsAt, string imageUrl, string access";
+
+export const CREATE_EVENT_SCHEMA_UID = keccak256(
+  encodePacked(
+    ["string", "address", "bool"],
+    [CREATE_EVENT_SCHEMA, zeroAddress, true]
+  )
+);
 
 export interface Event {
   owner: Address;
@@ -17,6 +23,7 @@ export interface Event {
   endsAt: number;
   imageUrl: string;
   type: "online" | "inPerson";
+  access: string;
 }
 
 export const CREATE_EVENT_SCHEMA_ENCODER = new SchemaEncoder(
@@ -79,6 +86,11 @@ export const useCreateEventAttestation = () => {
         {
           name: "imageUrl",
           value: encodeURIComponent(event.imageUrl),
+          type: "string",
+        },
+        {
+          name: "access",
+          value: encodeURIComponent(event.access),
           type: "string",
         },
       ]);

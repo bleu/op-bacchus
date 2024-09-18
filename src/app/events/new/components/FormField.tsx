@@ -9,7 +9,8 @@ type ValidFieldNames =
   | "type"
   | "imageUrl"
   | "briefDescription"
-  | "fullDescription";
+  | "fullDescription"
+  | "access";
 
 interface FormFieldProps {
   className: string;
