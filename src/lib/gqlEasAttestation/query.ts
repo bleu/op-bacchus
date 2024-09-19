@@ -1,6 +1,6 @@
-import { graphql } from "gql.tada";
+import { gql } from 'urql';
 
-export const USER_ATTESTATIONS_QUERY = graphql(`
+export const USER_ATTESTATIONS_QUERY = gql(`
   query getAttestationsByAttester($attester: String!) {
     attestations(where: { attester: { equals: $attester } }) {
       id
@@ -16,7 +16,7 @@ export const USER_ATTESTATIONS_QUERY = graphql(`
   }
 `);
 
-export const GET_ATTESTATION_BY_ID_QUERY = graphql(`
+export const GET_ATTESTATION_BY_ID_QUERY = gql(`
   query Attestation($id: String!) {
     attestation(where: { id: $id }) {
       id
