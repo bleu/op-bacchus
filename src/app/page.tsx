@@ -1,7 +1,9 @@
 "use client";
 import { useSigner } from "@/hooks/useSigner";
 import { API_URL_MAPPING, EVENT_SCHEMA_ID } from "@/lib/gqlEasAttestation";
-import { EVENTS_ATTESTATIONS_QUERY, USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import {
+  EVENTS_ATTESTATIONS_QUERY,
+} from "@/lib/gqlEasAttestation/query";
 import { format, fromUnixTime } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { useMemo } from "react";
@@ -55,12 +57,12 @@ export default function Events() {
   const chainId = useChainId();
 
   const attester = signer?.address || "";
-	const [result] = useQuery({
-		query: EVENTS_ATTESTATIONS_QUERY,
-		variables: { schemaId: EVENT_SCHEMA_ID },
-		context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
-		pause: !signer,
-	});
+  const [result] = useQuery({
+    query: EVENTS_ATTESTATIONS_QUERY,
+    variables: { schemaId: EVENT_SCHEMA_ID },
+    context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
+    pause: !signer,
+  });
 
   const { data, fetching, error } = result;
 
