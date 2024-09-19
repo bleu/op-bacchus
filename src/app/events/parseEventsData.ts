@@ -1,5 +1,5 @@
 import type { Event } from "@/hooks/useCreateEventAttestation";
-import { Address } from "viem";
+import type { Address } from "viem";
 
 interface ParsedDataItem {
   name: keyof Event;

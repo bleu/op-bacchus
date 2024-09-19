@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { clsx } from "clsx";
+import type { ReactNode } from "react";
 
 function ContinueButton({
   isContinueEnabled,
@@ -10,9 +10,10 @@ function ContinueButton({
 }) {
   return (
     <button
+      type="button"
       className={clsx(
         "w-52 rounded-xl bg-slate-300 py-2 font-medium text-slate-600",
-        { isContinueEnabled: "hover:bg-red-400 hover:text-white" }
+        { isContinueEnabled: "hover:bg-red-400 hover:text-white" },
       )}
       onClick={handleContinue}
       disabled={!isContinueEnabled}
@@ -35,7 +36,7 @@ export function FormContainer({
     <div className="w-1150px h-830px min-h- flex flex-col justify-between items-center py-10 px-16 border-2 rounded-3xl ">
       {children}
       <div className="w-full flex justify-between items-center">
-        <div className="w-2/6"></div>
+        <div className="w-2/6" />
         <div className="flex justify-center items-center">Progress Bar</div>
         <div className="flex w-2/6 justify-end">
           <ContinueButton

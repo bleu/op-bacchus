@@ -1,6 +1,6 @@
+import { toast } from "react-toastify";
 import { useCreateEventAttestation } from "../hooks/useCreateEventAttestation";
 import type { Event } from "../hooks/useCreateEventAttestation";
-import { toast } from "react-toastify";
 
 const today = new Date();
 const tomorrow = new Date();
@@ -37,6 +37,7 @@ export function CreateEventAttestationButton() {
 
   return (
     <button
+      type="button"
       className="bg-white hover:bg-gray-300 text-gray-800 font-semibold mr-4 py-2 px-4 border border-gray-400 rounded-lg shadow"
       onClick={handleCreateEventAttestation}
     >

@@ -1,12 +1,12 @@
-import { useSigner } from "@/hooks/useSigner";
-import { zeroAddress } from "viem";
-import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
-import { useCallback, useEffect, useState } from "react";
-import type { Address } from "viem";
 import {
   CREATE_EVENT_SCHEMA,
   CREATE_EVENT_SCHEMA_UID,
 } from "@/components/CreateEventSchemaButton";
+import { useSigner } from "@/hooks/useSigner";
+import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import { useCallback, useEffect, useState } from "react";
+import { zeroAddress } from "viem";
+import type { Address } from "viem";
 
 export interface Event {
   owner: Address;
@@ -20,7 +20,7 @@ export interface Event {
 }
 
 export const CREATE_EVENT_SCHEMA_ENCODER = new SchemaEncoder(
-  CREATE_EVENT_SCHEMA
+  CREATE_EVENT_SCHEMA,
 );
 
 export const useCreateEventAttestation = () => {
@@ -94,7 +94,7 @@ export const useCreateEventAttestation = () => {
 
       return await tx.wait();
     },
-    [eas]
+    [eas],
   );
 
   return createEventAttestation;

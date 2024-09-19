@@ -1,14 +1,14 @@
 "use client";
 import { useSigner } from "@/hooks/useSigner";
-import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { useQuery } from "urql";
 import { API_URL_MAPPING, EVENT_SCHEMA_ID } from "@/lib/gqlEasAttestation";
-import { useChainId } from "wagmi";
-import { useMemo } from "react";
-import { fromUnixTime, format } from "date-fns";
+import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import { format, fromUnixTime } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { parseEventsData } from "./parseEventsData";
 import Link from "next/link";
+import { useMemo } from "react";
+import { useQuery } from "urql";
+import { useChainId } from "wagmi";
+import { parseEventsData } from "./parseEventsData";
 
 const BackupImage = "https://via.placeholder.com/150";
 
@@ -48,8 +48,8 @@ export function sortByStartsAt(data: DataEntry[]): DataEntry[] {
 
 		if (!aStartsAt || !bStartsAt) return 0;
 
-		return parseInt(aStartsAt, 16) - parseInt(bStartsAt, 16);
-	});
+    return Number.parseInt(aStartsAt, 16) - Number.parseInt(bStartsAt, 16);
+  });
 }
 
 export default function Events() {
@@ -67,18 +67,19 @@ export default function Events() {
 
 	const { data, fetching, error } = result;
 
-	const attestationList = useMemo(
-		() =>
-			data?.attestations &&
-			sortByStartsAt(data.attestations).map((attestation) => (
-				<AttestationItem
-					key={attestation.id}
-					id={attestation.id}
-					data={attestation.decodedDataJson}
-				/>
-			)),
-		[data?.attestations],
-	);
+  const attestationList = useMemo(
+    () =>
+      data?.attestations
+        ? sortByStartsAt(data.attestations).map((attestation) => (
+            <AttestationItem
+              key={attestation.id}
+              id={attestation.id}
+              data={attestation.decodedDataJson}
+            />
+          ))
+        : [],
+    [data?.attestations]
+  );
 
 	if (!signer) {
 		return <div>Connect a wallet to view your attestations.</div>;

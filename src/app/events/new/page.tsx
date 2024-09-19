@@ -1,33 +1,17 @@
 "use client";
-import { Confirm } from "./forms/Confirm";
-import { Description } from "./forms/Description";
-import { Overview } from "./forms/Overview";
-import { Tickets } from "./forms/Tickets";
-import { type ReactNode, createContext, useState } from "react";
+import { NewEventContext, type NewEventType } from "@/contexts/event";
 import { useCreateEventAttestation } from "@/hooks/useCreateEventAttestation";
 import type { Event } from "@/hooks/useCreateEventAttestation";
+import { type ReactNode, createContext, useState } from "react";
 import { useAccount } from "wagmi";
-import type { OverviewFormData } from "./forms/Overview";
+import { Confirm } from "./forms/Confirm";
+import { Description } from "./forms/Description";
 import type { DescriptionFormData } from "./forms/Description";
+import { Overview } from "./forms/Overview";
+import type { OverviewFormData } from "./forms/Overview";
+import { Tickets } from "./forms/Tickets";
 
 type StepType = "Overview" | "Description" | "Tickets" | "Confirm";
-interface NewEventType {
-  owner: string | undefined;
-  name: string | undefined;
-  briefDescription: string | undefined;
-  fullDescription: string | undefined;
-  startsAt: number | undefined;
-  endsAt: number | undefined;
-  type: "online" | "inPerson" | undefined;
-  imageUrl: string | undefined;
-}
-
-interface NewEventContextInterface {
-  handleContinue: (formData: OverviewFormData | DescriptionFormData) => void;
-  updateEvent: (updateEventValues: Partial<NewEventType>) => void;
-}
-
-export const NewEventContext = createContext({} as NewEventContextInterface);
 
 export default function CreateEvent() {
   const [step, setStep] = useState<StepType>("Overview");

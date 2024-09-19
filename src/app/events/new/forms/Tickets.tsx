@@ -1,3 +1,3 @@
 export function Tickets() {
-	return <>Tickets</>;
+  return <>Tickets</>;
 }

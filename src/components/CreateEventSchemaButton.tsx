@@ -7,8 +7,8 @@ export const CREATE_EVENT_SCHEMA =
 export const CREATE_EVENT_SCHEMA_UID = keccak256(
   encodePacked(
     ["string", "address", "bool"],
-    [CREATE_EVENT_SCHEMA, zeroAddress, true]
-  )
+    [CREATE_EVENT_SCHEMA, zeroAddress, true],
+  ),
 );
 
 export function CreateEventSchemaButton() {
@@ -24,6 +24,7 @@ export function CreateEventSchemaButton() {
 
   return (
     <button
+      type="button"
       className="bg-white hover:bg-gray-300 text-gray-800 font-semibold mr-4 py-2 px-2 text-sm border border-gray-400 rounded-lg shadow"
       onClick={handleCreateEventSchema}
     >

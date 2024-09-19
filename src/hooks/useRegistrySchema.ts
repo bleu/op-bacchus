@@ -17,7 +17,7 @@ export const useRegistrySchema = () => {
     "0x4200000000000000000000000000000000000020";
 
   const [schemaRegistry, setSchemaRegistry] = useState<SchemaRegistry | null>(
-    null
+    null,
   );
   const [eas, setEas] = useState<EAS | null>(null);
   const signer = useSigner();
@@ -29,7 +29,7 @@ export const useRegistrySchema = () => {
       setEas(newEas);
 
       const newSchemaRegistry = new SchemaRegistry(
-        SCHEMA_REGISTRY_CONTRACT_ADDRESS
+        SCHEMA_REGISTRY_CONTRACT_ADDRESS,
       );
       newSchemaRegistry.connect(signer);
       setSchemaRegistry(newSchemaRegistry);
@@ -50,8 +50,8 @@ export const useRegistrySchema = () => {
       const SCHEMA_UID = keccak256(
         encodePacked(
           ["string", "address", "bool"],
-          [schema, resolver, revocable]
-        )
+          [schema, resolver, revocable],
+        ),
       );
       console.log("Schema UID:", SCHEMA_UID);
 
@@ -81,7 +81,7 @@ export const useRegistrySchema = () => {
         console.log("schemaRegistry", schemaRegistry);
       }
     },
-    [signer, schemaRegistry]
+    [signer, schemaRegistry],
   );
 
   return registrySchema;

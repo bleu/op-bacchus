@@ -1,12 +1,12 @@
-import { useSigner } from "@/hooks/useSigner";
-import { zeroAddress } from "viem";
-import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
-import { useCallback, useEffect, useState } from "react";
-import type { Address } from "viem";
 import {
   CREATE_TICKET_SCHEMA,
   CREATE_TICKET_SCHEMA_UID,
 } from "@/components/CreateTicketSchemaButton";
+import { useSigner } from "@/hooks/useSigner";
+import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import { useCallback, useEffect, useState } from "react";
+import { zeroAddress } from "viem";
+import type { Address } from "viem";
 
 export interface Ticket {
   owner: Address;
@@ -14,7 +14,7 @@ export interface Ticket {
 }
 
 export const CREATE_TICKET_SCHEMA_ENCODER = new SchemaEncoder(
-  CREATE_TICKET_SCHEMA
+  CREATE_TICKET_SCHEMA,
 );
 
 export const useCreateTicketAttestation = () => {
@@ -58,7 +58,7 @@ export const useCreateTicketAttestation = () => {
 
       return await tx.wait();
     },
-    [eas]
+    [eas],
   );
 
   return createTicketAttestation;

@@ -2,9 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { type ReactNode, useState } from "react";
-import { type State, useChainId, WagmiProvider } from "wagmi";
 import { Provider } from "urql";
 import { Client, fetchExchange } from "urql";
+import { type State, WagmiProvider, useChainId } from "wagmi";
 
 import { getConfig } from "@/wagmi";
 
