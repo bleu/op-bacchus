@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint:fix": "yarn biome check --write ./src"
   },
   "dependencies": {
     "@ethereum-attestation-service/eas-contracts": "^1.7.1",
