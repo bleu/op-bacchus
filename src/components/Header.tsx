@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -21,7 +22,15 @@ const NavItem = ({ href, children }: { href: string; children: ReactNode }) => (
 export function Header() {
   return (
     <div className="flex-col md:flex-row flex md:justify-between items-center p-10 h-36">
-      <div className="flex justify-start items-center w-2/6">Bacchus Logo</div>
+      <div className="flex-1">
+        <Image
+          alt="Bacchus logo"
+          src="/logo.svg"
+          width={100}
+          height={16}
+          className="flex justify-start items-center"
+        />
+      </div>
       <nav className="flex">
         <NavItem href={"/"}>Home</NavItem>
         <DropdownMenu>
@@ -40,7 +49,7 @@ export function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
       </nav>
-      <div className="flex w-2/6 h-10 justify-center md:justify-end">
+      <div className="flex flex-1 h-10 justify-center md:justify-end">
         <ConnectButton />
       </div>
     </div>
