@@ -67,15 +67,16 @@ export default function Events() {
 
   const attestationList = useMemo(
     () =>
-      data?.attestations &&
-      sortByStartsAt(data.attestations).map((attestation) => (
-        <AttestationItem
-          key={attestation.id}
-          id={attestation.id}
-          data={attestation.decodedDataJson}
-        />
-      )),
-    [data?.attestations],
+      data?.attestations
+        ? sortByStartsAt(data.attestations).map((attestation) => (
+            <AttestationItem
+              key={attestation.id}
+              id={attestation.id}
+              data={attestation.decodedDataJson}
+            />
+          ))
+        : [],
+    [data?.attestations]
   );
 
   if (!signer) {
