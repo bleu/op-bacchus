@@ -72,7 +72,7 @@ export function Description() {
           className="w-1000px h-12 mt-1 pl-2 border-2 rounded-lg"
           label="Access information"
           type="text"
-          placeholder="Place information people will need to access the event (meeting links, QR code, etc.)"
+          placeholder="Place information people will need to access the event (meeting link, QR code address, etc.)"
           name="access"
           register={register}
           error={errors.access}
