@@ -4,10 +4,10 @@ import { CreateEventAttestationButton } from "@/components/CreateEventAttestatio
 import { CreateEventSchemaButton } from "@/components/CreateEventSchemaButton";
 
 export default function AdminPage() {
-	return (
-		<div>
-			<CreateEventAttestationButton />
-			<CreateEventSchemaButton />
-		</div>
-	);
+  return (
+    <div>
+      <CreateEventAttestationButton />
+      <CreateEventSchemaButton />
+    </div>
+  );
 }

@@ -14,26 +14,26 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Bacchus",
-	description: "Events and tickets",
+  title: "Bacchus",
+  description: "Events and tickets",
 };
 
 export default function RootLayout(props: { children: ReactNode }) {
-	const initialState = cookieToInitialState(
-		getConfig(),
-		headers().get("cookie"),
-	);
-	return (
-		<html lang="en">
-			<body className={inter.className}>
-				<Providers initialState={initialState}>
-					<div>
-						<Header />
-						{props.children}
-					</div>
-					<ToastContainer />
-				</Providers>
-			</body>
-		</html>
-	);
+  const initialState = cookieToInitialState(
+    getConfig(),
+    headers().get("cookie"),
+  );
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Providers initialState={initialState}>
+          <div>
+            <Header />
+            {props.children}
+          </div>
+          <ToastContainer />
+        </Providers>
+      </body>
+    </html>
+  );
 }
