@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import QRCode from "react-qr-code";
 import { MaterialSymbol } from "react-material-symbols";
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 
 export type TicketInfoType =
   | {
@@ -22,16 +23,9 @@ const ButtonCopyToClipBoard = ({
   buttonText: string;
   className: string;
 }) => {
-  const [copied, setCopied] = useState(false);
-
-  const copyToClipboard = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  };
-
+  const { copied, copyToClipboard } = useCopyToClipboard({
+    copiedEffectTimeMs: 2000,
+  });
   return (
     <button
       onClick={() => copyToClipboard(contentToCopy)}
