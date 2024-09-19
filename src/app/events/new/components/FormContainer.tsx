@@ -8,7 +8,6 @@ function ContinueButton({
   isContinueEnabled: boolean;
   handleContinue: () => void;
 }) {
-  console.log("isContinueEnabled", isContinueEnabled);
   return (
     <button
       className={clsx(

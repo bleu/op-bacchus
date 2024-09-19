@@ -43,12 +43,6 @@ export default function Page({ params }: { params: { id: string } }) {
     "d, MMMM, yyyy 'at' ha."
   );
 
-  if (eventData.access) {
-    console.log("there is access:", eventData.access);
-  } else {
-    console.log("there is no access:");
-  }
-
   const userIsEventOwner = account.address === eventData.owner;
 
   return (
