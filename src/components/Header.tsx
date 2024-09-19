@@ -44,7 +44,7 @@ export function Header() {
               <Link href={"/events"}>My Events</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={"/events/new"}>New Events</Link>
+              <Link href={"/events/new"}>New Event</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
