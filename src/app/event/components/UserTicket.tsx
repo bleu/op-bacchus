@@ -110,7 +110,7 @@ export const UserTicket = ({
     : { date: undefined, time: undefined };
 
   return (
-    <div className="flex items-start justify-start w-full border-2 rounded-3xl p-8 mt-8">
+    <div className="flex items-start justify-start w-full max-w-[1000px] border-2 rounded-3xl p-8 mt-8">
       <QRCode className="w-48 h-48 flex-none" value={eventData?.access || ""} />
       <div className="flex flex-col justify-center items-start w-full pr-2 pl-2 pt-0 ml-8">
         <div className="flex items-center justify-between w-full pb-4 border-b-2 border-dashed">

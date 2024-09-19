@@ -78,7 +78,7 @@ export const OtherInfoSection = ({
               </TabsTrigger>
             ) : undefined}
           </TabsList>
-          <Modal eventId={eventId} />
+          {userIsEventOwner ? <Modal eventId={eventId} /> : undefined}
         </OtherInfoHeaderContainer>
         <TabsContent value="about">
           <span>Description</span>: {eventData!.fullDescription}
@@ -94,7 +94,9 @@ export const OtherInfoSection = ({
         ) : undefined}
         {userHasTicket ? (
           <TabsContent value="myTicket">
-            <UserTicket eventData={eventData} userTicket={userTicket} />
+            <div className="w-full flex items-center justify-center">
+              <UserTicket eventData={eventData} userTicket={userTicket} />
+            </div>
           </TabsContent>
         ) : undefined}
       </Tabs>
