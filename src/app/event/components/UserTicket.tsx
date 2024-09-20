@@ -1,7 +1,6 @@
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import clsx from "clsx";
-import { useState } from "react";
-import { MaterialSymbol } from "react-material-symbols";
+import { CheckIcon, CopyIcon } from "lucide-react";
 import QRCode from "react-qr-code";
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 
@@ -31,11 +30,7 @@ const ButtonCopyToClipBoard = ({
       onClick={() => copyToClipboard(contentToCopy)}
       className={className}
     >
-      {copied ? (
-        <MaterialSymbol icon="check" size={18} />
-      ) : (
-        <MaterialSymbol icon="content_copy" size={18} />
-      )}
+      {copied ? <CheckIcon size={18} /> : <CopyIcon size={18} />}
       {buttonText}
     </button>
   );
@@ -72,7 +67,7 @@ const TruncateAndCopyText = ({
 };
 
 function formatTimestamp(timestamp: number): { time: string; date: string } {
-  const date = new Date(timestamp); // Convert seconds to milliseconds
+  const date = new Date(timestamp);
 
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "2-digit",

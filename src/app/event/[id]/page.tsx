@@ -2,10 +2,8 @@
 
 import { format } from "date-fns";
 import { Calendar } from "lucide-react";
-import { useMemo } from "react";
 import type { Address } from "viem";
-import { useAccount, useChainId } from "wagmi";
-import { parseEventsData } from "../../events/parseEventsData";
+import { useAccount } from "wagmi";
 import {
   EventInfoContainer,
   OtherInfoSection,
@@ -32,7 +30,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   if (!account) return <p>Please connect wallet to load the informations...</p>;
 
-  if (eventData === undefined) return <p>loading...</p>;
+  if (eventData === undefined) return <p>Loading...</p>;
 
   if (eventData === null)
     return <p>It seems that this event does not exist.</p>;
