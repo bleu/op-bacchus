@@ -1,83 +1,92 @@
 "use client";
+
 import { AttestationItem } from "@/components/AttestationItem";
-import { CREATE_EVENT_SCHEMA_UID } from "@/hooks/useCreateEventAttestation";
-import { useSigner } from "@/hooks/useSigner";
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { useMemo } from "react";
-import { useQuery } from "urql";
-import { useChainId } from "wagmi";
+import Link from "next/link";
+import type React from "react";
+import { useMemo, useState } from "react";
+import type { DataEntry } from "../event/hooks/useAllEventsData";
+import { useOwnedEventsData } from "../event/hooks/useOwnedEventsData";
+import { parseEventsData } from "./parseEventsData";
 
-interface DataEntry {
-  attester: string;
-  data: string;
-  decodedDataJson: string;
-  expirationTime: number;
-  id: string;
-  recipient: string;
-  refUID: string;
-  revocable: boolean;
-  revocationTime: number;
-}
+export default function MyEvents() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { ownedEventsData, signer } = useOwnedEventsData();
 
-export function sortByStartsAt(data: DataEntry[]): DataEntry[] {
-  return data.sort((a, b) => {
-    const aDecoded = JSON.parse(a.decodedDataJson);
-    const bDecoded = JSON.parse(b.decodedDataJson);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
-    const aStartsAt = aDecoded.find((item: any) => item.name === "startsAt")
-      ?.value.value.hex;
-    const bStartsAt = bDecoded.find((item: any) => item.name === "startsAt")
-      ?.value.value.hex;
-
-    if (!aStartsAt || !bStartsAt) return 0;
-
-    return Number.parseInt(aStartsAt, 16) - Number.parseInt(bStartsAt, 16);
-  });
-}
-
-export default function Events() {
-  const signer = useSigner();
-
-  const chainId = useChainId();
-
-  const attester = signer?.address || "";
-  const [result] = useQuery({
-    query: USER_ATTESTATIONS_QUERY,
-    variables: { attester, schemaId: CREATE_EVENT_SCHEMA_UID },
-    context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
-    pause: !signer,
-  });
-
-  const { data } = result;
+  const filteredAttestations = useMemo(() => {
+    if (!ownedEventsData) return [];
+    return ownedEventsData.filter((attestation: DataEntry) => {
+      const parsedData = parseEventsData(attestation.decodedDataJson);
+      const searchableText =
+        `${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
+      const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+      return matchesSearch;
+    });
+  }, [ownedEventsData, searchTerm]);
 
   const attestationList = useMemo(
     () =>
-      data?.attestations
-        ? sortByStartsAt(data.attestations).map((attestation) => (
-            <AttestationItem
-              key={attestation.id}
-              id={attestation.id}
-              data={attestation.decodedDataJson}
-            />
-          ))
-        : [],
-    [data?.attestations],
+      filteredAttestations.map((attestation: DataEntry) => (
+        <AttestationItem
+          id={attestation.id}
+          key={attestation.id}
+          data={attestation.decodedDataJson}
+        />
+      )),
+    [filteredAttestations],
   );
 
   if (!signer) {
     return <div>Connect a wallet to view your attestations.</div>;
   }
 
-  if (!data) {
+  if (!ownedEventsData) {
     return <div>Loading attestation data...</div>;
   }
 
   return (
     <div className="mx-20">
-      <h2>Attestations</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        {attestationList}
+      <div className="mt-12 mb-3">
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold truncate mr-2">
+            My Events
+          </h1>
+          <Link
+            href="/events/new"
+            className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 sm:py-2 px-2 sm:px-4 rounded flex items-center text-xs sm:text-sm md:text-base whitespace-nowrap"
+          >
+            <span className="text-sm sm:text-lg md:text-xl mr-1">+</span>
+            <span>Create Event</span>
+          </Link>
+        </div>
+        <hr className="border-t border-gray-300 w-full" />
+      </div>
+      <form className="w-full flex justify-center items-center gap-4 mb-12">
+        <input
+          className="w-full h-12 pl-2 border-2 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+          placeholder="Search"
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </form>
+      <div className="mb-3">
+        <div className="flex items-center justify-between mb-1">
+          <h1 className="text-base font-bold">Hosted by me</h1>
+        </div>
+        <hr className="border-t border-gray-300 w-full" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-10 w-full gap-y-12">
+        {attestationList.length > 0 ? (
+          attestationList
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No events found matching your search.
+          </div>
+        )}
       </div>
     </div>
   );
