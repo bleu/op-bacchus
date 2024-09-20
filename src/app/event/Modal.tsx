@@ -35,7 +35,6 @@ export function Modal({ eventId }: { eventId: string }) {
     const nonEmptyAddresses = data.addresses.filter(
       (element) => element.address !== "",
     );
-    console.log("Form submitted with data:", nonEmptyAddresses);
     setOpen(false);
 
     const tickets = nonEmptyAddresses.map((element) => {

@@ -1,78 +1,61 @@
 "use client";
 
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { GET_ATTESTATION_BY_ID_QUERY } from "@/lib/gqlEasAttestation/query";
 import { format } from "date-fns";
-import { useMemo } from "react";
-import { useQuery } from "urql";
-import { useAccount, useChainId } from "wagmi";
-import { parseEventsData } from "../../events/parseEventsData";
-
-import { Modal } from "../Modal";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "lucide-react";
+import type { Address } from "viem";
+import { useAccount } from "wagmi";
 import {
   EventInfoContainer,
+  OtherInfoSection,
   StatusFlag,
-  Ticket,
-  TicketInfoContainer,
-  TicketInfoHeaderContainer,
 } from "../components/PageComponents";
-
-const ticketAddresses = [
-  { address: "0xkamscknsadkcnaksdncjsdncsjdn" },
-  { address: "0xkamscknsadkcnaksdncjsdncsjab" },
-  { address: "0xkamscknsadkcnaksdncjsdncsjac" },
-];
+import { useEventData } from "../hooks/useEventData";
+import { useTicketAddresses } from "../hooks/useTicketAddresses";
 
 export default function Page({ params }: { params: { id: string } }) {
   const eventId = params.id;
 
   const account = useAccount();
-  const chainId = useChainId();
 
-  const [result] = useQuery({
-    query: GET_ATTESTATION_BY_ID_QUERY,
-    variables: { id: eventId },
-    context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
+  const {
+    eventData,
+    fetching: fetchingEvent,
+    error: errorEvent,
+  } = useEventData({ eventId });
+
+  const { ticketAddresses, userHasTicket, userTicket } = useTicketAddresses({
+    eventId,
+    eventData,
   });
-
-  const { data, fetching, error } = result;
-
-  const parsedData = useMemo(
-    () =>
-      data?.attestation && parseEventsData(data.attestation?.decodedDataJson),
-    [data?.attestation],
-  );
 
   if (!account) return <p>Please connect wallet to load the informations...</p>;
 
-  if (parsedData === undefined) return <p>loading...</p>;
+  if (eventData === undefined) return <p>Loading...</p>;
 
-  if (parsedData === null)
+  if (eventData === null)
     return <p>It seems that this event does not exist.</p>;
 
   const startsAtFormatted = format(
-    new Date(parsedData.startsAt),
+    new Date(eventData.startsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
 
   const endsAtFormatted = format(
-    new Date(parsedData.endsAt),
+    new Date(eventData.endsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
-  const userIsOwner = account.address === parsedData.owner;
+  if (ticketAddresses === undefined) return <p>Loading...</p>;
+  const userIsEventOwner = account.address === eventData.owner;
 
   return (
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
       <div
         className="bg-contain bg-center bg-no-repeat w-full h-[450px]  block p-8 border-2 rounded-3xl"
-        style={{ backgroundImage: `url(${parsedData.imageUrl})` }}
+        style={{ backgroundImage: `url(${eventData.imageUrl})` }}
       />
       <EventInfoContainer>
         <div className="flex flex-col md:flex-row md:justify-between">
-          <h1 className="text-4xl font-bold mb-4">{parsedData.name}</h1>
+          <h1 className="text-4xl font-bold mb-4">{eventData.name}</h1>
           <StatusFlag />
         </div>
         <div className="flex items-center gap-x-2">
@@ -82,37 +65,14 @@ export default function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
       </EventInfoContainer>
-      <TicketInfoContainer>
-        <Tabs defaultValue="about">
-          <TicketInfoHeaderContainer>
-            <TabsList>
-              <TabsTrigger
-                value="about"
-                className="rounded-none border-b data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-600"
-              >
-                About
-              </TabsTrigger>
-              <TabsTrigger
-                value="tickets"
-                className="rounded-none border-b data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-red-600"
-              >
-                Tickets
-              </TabsTrigger>
-            </TabsList>
-            {userIsOwner && <Modal eventId={eventId} />}
-          </TicketInfoHeaderContainer>
-          <TabsContent value="about">
-            <span>Description</span>: {parsedData.fullDescription}
-          </TabsContent>
-          <TabsContent value="tickets">
-            <div className="block mt-4">
-              {ticketAddresses.map((ticket) => {
-                return <Ticket key={ticket.address} address={ticket.address} />;
-              })}
-            </div>
-          </TabsContent>
-        </Tabs>
-      </TicketInfoContainer>
+      <OtherInfoSection
+        eventId={eventId}
+        eventData={eventData}
+        ticketAddresses={ticketAddresses as Address[]}
+        userIsEventOwner={userIsEventOwner}
+        userHasTicket={userHasTicket}
+        userTicket={userTicket}
+      />
     </main>
   );
 }

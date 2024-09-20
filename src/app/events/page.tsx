@@ -1,6 +1,6 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
-import { CREATE_EVENT_SCHEMA_UID } from "@/components/CreateEventSchemaButton";
+import { CREATE_EVENT_SCHEMA_UID } from "@/hooks/useCreateEventAttestation";
 import { useSigner } from "@/hooks/useSigner";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";

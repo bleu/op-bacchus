@@ -10,11 +10,13 @@ import { FormField } from "../components/FormField";
 export interface DescriptionFormData {
   briefDescription: string;
   fullDescription: string;
+  access: string;
 }
 
 const UserSchema: ZodType<DescriptionFormData> = z.object({
   briefDescription: z.string(),
   fullDescription: z.string(),
+  access: z.string(),
 });
 
 export function Description() {
@@ -23,7 +25,7 @@ export function Description() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     getValues,
   } = useForm<DescriptionFormData>({
     resolver: zodResolver(UserSchema),
@@ -66,6 +68,15 @@ export function Description() {
             </span>
           )}
         </div>
+        <FormField
+          className="w-1000px h-12 mt-1 pl-2 border-2 rounded-lg"
+          label="Access information"
+          type="text"
+          placeholder="Place information people will need to access the event (meeting link, QR code address, etc.)"
+          name="access"
+          register={register}
+          error={errors.access}
+        />
       </form>
     </FormContainer>
   );

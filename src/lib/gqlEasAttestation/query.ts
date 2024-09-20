@@ -50,3 +50,18 @@ export const GET_ATTESTATION_BY_ID_QUERY = gql(`
     }
   }
 `);
+
+export const GET_TICKETS_BY_EVENT_QUERY = gql(`
+  query getTicketsByEvent($schemaId: String!, $eventId: String!) {
+    attestations(
+      where: { schemaId: { equals: $schemaId }, refUID: { equals: $eventId } }
+    ) {
+      id
+      attester
+      decodedDataJson
+      recipient
+      refUID
+      revoked
+    }
+  }
+`);
