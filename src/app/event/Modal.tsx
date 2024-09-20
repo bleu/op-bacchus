@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { type Address, isAddress, zeroAddress } from "viem";
-import { type TicketFormData, useTicketForm } from "./hooks/useTicketForm";
 
 import { useCreateTicketMultiAttestations } from "@/hooks/useCreateTicketMultiAttestations";
 
+import { type TicketFormData, useTicketForm } from "@/hooks/useTicketForm";
 import {
   AssignTicketText,
   CloseDialogButton,

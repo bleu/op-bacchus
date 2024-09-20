@@ -1,5 +1,8 @@
 "use client";
 
+import { LoadingIndicator } from "@/components/LoadingIndicator";
+import { useEventData } from "@/hooks/useEventData";
+import { useTicketAddresses } from "@/hooks/useTicketAddresses";
 import { format } from "date-fns";
 import { Calendar } from "lucide-react";
 import type { Address } from "viem";
@@ -9,8 +12,6 @@ import {
   OtherInfoSection,
   StatusFlag,
 } from "../components/PageComponents";
-import { useEventData } from "../hooks/useEventData";
-import { useTicketAddresses } from "../hooks/useTicketAddresses";
 
 export default function Page({ params }: { params: { id: string } }) {
   const eventId = params.id;
@@ -30,7 +31,12 @@ export default function Page({ params }: { params: { id: string } }) {
 
   if (!account) return <p>Please connect wallet to load the informations...</p>;
 
-  if (eventData === undefined) return <p>Loading...</p>;
+  if (eventData === undefined)
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
 
   if (eventData === null)
     return <p>It seems that this event does not exist.</p>;
@@ -44,7 +50,12 @@ export default function Page({ params }: { params: { id: string } }) {
     new Date(eventData.endsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
-  if (ticketAddresses === undefined) return <p>Loading...</p>;
+  if (ticketAddresses === undefined)
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   const userIsEventOwner = account.address === eventData.owner;
 
   return (

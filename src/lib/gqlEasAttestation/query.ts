@@ -65,3 +65,34 @@ export const GET_TICKETS_BY_EVENT_QUERY = gql(`
     }
   }
 `);
+
+export const TICKET_BY_RECIPIENT_QUERY = gql(`
+  query getTicketsByRecipient($schemaId: String!, $recipient: String!) {
+    attestations(
+      where: { schemaId: {equals:$schemaId}, recipient: {equals: $recipient}}
+    ) {
+      id
+      attester
+      decodedDataJson
+      recipient
+      refUID
+    }
+  }
+    `);
+
+export const GET_TICKET_ATTESTATION_BY_EVENT_ID_QUERY = gql(`
+    query GetAttestationsByIDs($ids: [String!]!) {
+      attestations(where: { id: { in: $ids } }) {
+        id
+        attester
+        recipient
+        refUID
+        revocable
+        revocationTime
+        expirationTime
+        data
+        decodedDataJson
+        timeCreated
+      }
+    }
+    `);

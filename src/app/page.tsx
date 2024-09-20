@@ -1,68 +1,42 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
-import { CREATE_EVENT_SCHEMA_UID } from "@/hooks/useCreateEventAttestation";
-import { useSigner } from "@/hooks/useSigner";
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { EVENTS_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import { useAllEventsData } from "@/hooks/useAllEventsData";
+import type { DataEntry } from "@/types";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useMemo } from "react";
-import { useQuery } from "urql";
-import { useChainId } from "wagmi";
+import { useMemo, useState } from "react";
+import { parseEventsData } from "./events/parseEventsData";
 
-interface DataEntry {
-  attester: string;
-  data: string;
-  decodedDataJson: string;
-  expirationTime: number;
-  id: string;
-  recipient: string;
-  refUID: string;
-  revocable: boolean;
-  revocationTime: number;
-}
+export default function AllEvents() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const { allEventsData, signer } = useAllEventsData();
 
-function sortByStartsAt(data: DataEntry[]): DataEntry[] {
-  return data.sort((a, b) => {
-    const aDecoded = JSON.parse(a.decodedDataJson);
-    const bDecoded = JSON.parse(b.decodedDataJson);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
-    const aStartsAt = aDecoded.find((item: any) => item.name === "startsAt")
-      ?.value.value.hex;
-    const bStartsAt = bDecoded.find((item: any) => item.name === "startsAt")
-      ?.value.value.hex;
-
-    if (!aStartsAt || !bStartsAt) return 0;
-
-    return Number.parseInt(aStartsAt, 16) - Number.parseInt(bStartsAt, 16);
-  });
-}
-
-export default function Events() {
-  const signer = useSigner();
-
-  const chainId = useChainId();
-
-  const [result] = useQuery({
-    query: EVENTS_ATTESTATIONS_QUERY,
-    variables: { schemaId: CREATE_EVENT_SCHEMA_UID },
-    context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
-    pause: !signer,
-  });
-
-  const { data } = result;
+  const filteredAttestations = useMemo(() => {
+    if (!allEventsData) return [];
+    return allEventsData.filter((attestation: DataEntry) => {
+      const parsedData = parseEventsData(attestation.decodedDataJson);
+      const searchableText =
+        `${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
+      const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+      return matchesSearch;
+    });
+  }, [allEventsData, searchTerm]);
 
   const attestationList = useMemo(
     () =>
-      data?.attestations &&
-      sortByStartsAt(data.attestations).map((attestation) => (
+      filteredAttestations &&
+      filteredAttestations.map((attestation: DataEntry) => (
         <AttestationItem
           id={attestation.id}
           key={attestation.id}
           data={attestation.decodedDataJson}
         />
       )),
-    [data?.attestations]
+    [filteredAttestations],
   );
 
   if (!signer) {
@@ -74,7 +48,7 @@ export default function Events() {
     );
   }
 
-  if (!data) {
+  if (!allEventsData) {
     return (
       <div className="flex items-center justify-center h-screen -mt-36">
         <LoadingIndicator />
@@ -93,6 +67,8 @@ export default function Events() {
           className="w-[50vw] h-12 mb-8 pl-2 border-2 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
           placeholder="Search"
           type="text"
+          value={searchTerm}
+          onChange={handleSearch}
         />
       </form>
 

@@ -1,4 +1,4 @@
-import { parseEventsData } from "@/app/events/parseEventsData";
+import type { TicketInfoType } from "@/app/event/components/UserTicket";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import { CREATE_TICKET_SCHEMA_UID } from "@/hooks/useCreateTicketMultiAttestations";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
@@ -28,8 +28,8 @@ export const useTicketAddresses = ({
   const ticketAddresses = useMemo(
     () =>
       data?.attestations &&
-      data.attestations.map((ticket) => {
-        return ticket.recipient;
+      data.attestations.map((ticket: TicketInfoType) => {
+        return ticket?.recipient;
       }),
     [data?.attestations],
   );
@@ -43,7 +43,7 @@ export const useTicketAddresses = ({
     () =>
       data?.attestations &&
       data.attestations.filter(
-        (ticket) => ticket.recipient === account.address,
+        (ticket: TicketInfoType) => ticket?.recipient === account.address,
       )[0],
     [data?.attestations, account],
   );
