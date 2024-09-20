@@ -6,6 +6,7 @@ import { GET_TICKETS_BY_EVENT_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useAccount, useChainId } from "wagmi";
+import type { TicketInfoType } from "../components/UserTicket";
 
 export const useTicketAddresses = ({
   eventId,
@@ -28,8 +29,8 @@ export const useTicketAddresses = ({
   const ticketAddresses = useMemo(
     () =>
       data?.attestations &&
-      data.attestations.map((ticket) => {
-        return ticket.recipient;
+      data.attestations.map((ticket: TicketInfoType) => {
+        return ticket?.recipient;
       }),
     [data?.attestations],
   );
@@ -43,7 +44,7 @@ export const useTicketAddresses = ({
     () =>
       data?.attestations &&
       data.attestations.filter(
-        (ticket) => ticket.recipient === account.address,
+        (ticket: TicketInfoType) => ticket?.recipient === account.address,
       )[0],
     [data?.attestations, account],
   );
