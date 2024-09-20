@@ -25,12 +25,6 @@ export default function Page({ params }: { params: { id: string } }) {
     error: errorEvent,
   } = useEventData({ eventId });
 
-  const parsedData = useMemo(
-    () =>
-      eventData?.attestation &&
-      parseEventsData(eventData.attestation?.decodedDataJson),
-    [eventData?.attestation],
-  );
   const { ticketAddresses, userHasTicket, userTicket } = useTicketAddresses({
     eventId,
     eventData,
@@ -44,12 +38,12 @@ export default function Page({ params }: { params: { id: string } }) {
     return <p>It seems that this event does not exist.</p>;
 
   const startsAtFormatted = format(
-    new Date(parsedData.startsAt),
+    new Date(eventData.startsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
 
   const endsAtFormatted = format(
-    new Date(parsedData.endsAt),
+    new Date(eventData.endsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
   if (ticketAddresses === undefined) return <p>Loading...</p>;
@@ -59,7 +53,7 @@ export default function Page({ params }: { params: { id: string } }) {
     <main className="flex flex-col items-center justify-center gap-y-10 mx-20 my-10 xl:px-[10%]">
       <div
         className="bg-contain bg-center bg-no-repeat w-full h-[450px]  block p-8 border-2 rounded-3xl"
-        style={{ backgroundImage: `url(${parsedData.imageUrl})` }}
+        style={{ backgroundImage: `url(${eventData.imageUrl})` }}
       />
       <EventInfoContainer>
         <div className="flex flex-col md:flex-row md:justify-between">
