@@ -1,8 +1,8 @@
+import type { Event } from "@/hooks/useCreateEventAttestation";
 import clsx from "clsx";
 import { useState } from "react";
-import type { Event } from "@/hooks/useCreateEventAttestation";
-import QRCode from "react-qr-code";
 import { MaterialSymbol } from "react-material-symbols";
+import QRCode from "react-qr-code";
 import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 
 export type TicketInfoType =
@@ -55,7 +55,7 @@ const TruncateAndCopyText = ({
       <p
         className={clsx(
           "overflow-hidden text-ellipsis whitespace-nowrap",
-          className
+          className,
         )}
         style={{ maxWidth: `${maxWidth}px` }}
         title={text}

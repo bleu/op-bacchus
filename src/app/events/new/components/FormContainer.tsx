@@ -13,7 +13,7 @@ function ContinueButton({
       type="button"
       className={clsx(
         "w-52 rounded-xl bg-slate-300 py-2 font-medium text-slate-600",
-        { "hover:bg-red-600 hover:text-white": isContinueEnabled }
+        { "hover:bg-red-600 hover:text-white": isContinueEnabled },
       )}
       onClick={handleContinue}
       disabled={!isContinueEnabled}

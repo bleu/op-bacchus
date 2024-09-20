@@ -15,7 +15,7 @@ export const useCopyToClipboard = ({
         setCopied(false);
       }, copiedEffectTimeMs);
     },
-    [copiedEffectTimeMs]
+    [copiedEffectTimeMs],
   );
 
   return { copied, copyToClipboard };

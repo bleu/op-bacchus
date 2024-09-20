@@ -1,17 +1,17 @@
 "use client";
 
 import { format } from "date-fns";
+import { Calendar } from "lucide-react";
 import { useMemo } from "react";
+import type { Address } from "viem";
 import { useAccount, useChainId } from "wagmi";
 import { parseEventsData } from "../../events/parseEventsData";
 import {
   EventInfoContainer,
-  StatusFlag,
   OtherInfoSection,
+  StatusFlag,
 } from "../components/PageComponents";
-import { Calendar } from "lucide-react";
 import { useEventData } from "../hooks/useEventData";
-import { Address } from "viem";
 import { useTicketAddresses } from "../hooks/useTicketAddresses";
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -25,10 +25,10 @@ export default function Page({ params }: { params: { id: string } }) {
     error: errorEvent,
   } = useEventData({ eventId });
 
-
   const parsedData = useMemo(
     () =>
-      eventData?.attestation && parseEventsData(eventData.attestation?.decodedDataJson),
+      eventData?.attestation &&
+      parseEventsData(eventData.attestation?.decodedDataJson),
     [eventData?.attestation],
   );
   const { ticketAddresses, userHasTicket, userTicket } = useTicketAddresses({

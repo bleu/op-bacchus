@@ -1,9 +1,9 @@
-import { GET_ATTESTATION_BY_ID_QUERY } from "@/lib/gqlEasAttestation/query";
-import { useQuery } from "urql";
-import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { useMemo } from "react";
-import { useChainId } from "wagmi";
 import { parseEventsData } from "@/app/events/parseEventsData";
+import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
+import { GET_ATTESTATION_BY_ID_QUERY } from "@/lib/gqlEasAttestation/query";
+import { useMemo } from "react";
+import { useQuery } from "urql";
+import { useChainId } from "wagmi";
 
 export const useEventData = ({ eventId }: { eventId: string }) => {
   const chainId = useChainId();
@@ -18,7 +18,7 @@ export const useEventData = ({ eventId }: { eventId: string }) => {
   const eventData = useMemo(
     () =>
       data?.attestation && parseEventsData(data.attestation?.decodedDataJson),
-    [data?.attestation]
+    [data?.attestation],
   );
 
   return { eventData, fetching, error };

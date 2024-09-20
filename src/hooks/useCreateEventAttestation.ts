@@ -1,7 +1,7 @@
 import { useSigner } from "@/hooks/useSigner";
-import { encodePacked, keccak256, zeroAddress } from "viem";
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { useCallback, useEffect, useState } from "react";
+import { encodePacked, keccak256, zeroAddress } from "viem";
 import type { Address } from "viem";
 
 export const CREATE_EVENT_SCHEMA =
@@ -10,8 +10,8 @@ export const CREATE_EVENT_SCHEMA =
 export const CREATE_EVENT_SCHEMA_UID = keccak256(
   encodePacked(
     ["string", "address", "bool"],
-    [CREATE_EVENT_SCHEMA, zeroAddress, true]
-  )
+    [CREATE_EVENT_SCHEMA, zeroAddress, true],
+  ),
 );
 
 export interface Event {

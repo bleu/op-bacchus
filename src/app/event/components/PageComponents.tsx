@@ -1,9 +1,9 @@
-import { type ReactNode } from "react";
-import { Modal } from "../Modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Event } from "@/hooks/useCreateEventAttestation";
+import type { ReactNode } from "react";
 import type { Address } from "viem";
-import { UserTicket, type TicketInfoType } from "./UserTicket";
+import { Modal } from "../Modal";
+import { type TicketInfoType, UserTicket } from "./UserTicket";
 
 export const EventInfoContainer = ({ children }: { children: ReactNode }) => {
   return (

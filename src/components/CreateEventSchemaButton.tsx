@@ -1,6 +1,6 @@
+import { CREATE_EVENT_SCHEMA } from "@/hooks/useCreateEventAttestation";
 import { useRegistrySchema } from "@/hooks/useRegistrySchema";
 import { zeroAddress } from "viem";
-import { CREATE_EVENT_SCHEMA } from "@/hooks/useCreateEventAttestation";
 
 export function CreateEventSchemaButton() {
   const registrySchema = useRegistrySchema();
