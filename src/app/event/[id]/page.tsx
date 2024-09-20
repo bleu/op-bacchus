@@ -53,11 +53,15 @@ export default function Page({ params }: { params: { id: string } }) {
   if (parsedData === null)
     return <p>It seems that this event does not exist.</p>;
 
-  const datetimeFormatted = format(
+  const startsAtFormatted = format(
     new Date(parsedData.startsAt),
     "d, MMMM, yyyy 'at' ha.",
   );
 
+  const endsAtFormatted = format(
+    new Date(parsedData.endsAt),
+    "d, MMMM, yyyy 'at' ha.",
+  );
   const userIsOwner = account.address === parsedData.owner;
 
   return (
@@ -73,7 +77,9 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         <div className="flex items-center gap-x-2">
           <Calendar className="size-4" />
-          <p>{datetimeFormatted}</p>
+          <p>
+            {startsAtFormatted} - {endsAtFormatted}
+          </p>
         </div>
       </EventInfoContainer>
       <TicketInfoContainer>
@@ -93,7 +99,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 Tickets
               </TabsTrigger>
             </TabsList>
-            {userIsOwner ? <Modal eventId={eventId} /> : undefined}
+            {userIsOwner && <Modal eventId={eventId} />}
           </TicketInfoHeaderContainer>
           <TabsContent value="about">
             <span>Description</span>: {parsedData.fullDescription}

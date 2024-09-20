@@ -1,8 +1,26 @@
-import { gql } from 'urql';
+import { gql } from "urql";
+
+export const EVENTS_ATTESTATIONS_QUERY = gql(`
+  query getAttestationsEvents($schemaId: String!) {
+    attestations(
+      where: { schemaId: {equals: $schemaId} }
+    ) {
+      id
+      attester
+      recipient
+      refUID
+      revocable
+      revocationTime
+      expirationTime
+      data
+      decodedDataJson
+    }
+  }
+`);
 
 export const USER_ATTESTATIONS_QUERY = gql(`
-  query getAttestationsByAttester($attester: String!) {
-    attestations(where: { attester: { equals: $attester } }) {
+  query getAttestationsByAttester($attester: String!, $schemaId: String!) {
+    attestations(where: { attester: { equals: $attester }, schemaId: { equals: $schemaId } }) {
       id
       attester
       recipient

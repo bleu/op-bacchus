@@ -1,25 +1,12 @@
 "use client";
+import { AttestationItem } from "@/components/AttestationItem";
+import { CREATE_EVENT_SCHEMA_UID } from "@/components/CreateEventSchemaButton";
 import { useSigner } from "@/hooks/useSigner";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
-import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { format, fromUnixTime } from "date-fns";
-import { enUS } from "date-fns/locale";
+import { EVENTS_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
-import { parseEventsData } from "./events/parseEventsData";
-
-function epochToCustomDate(epoch: number): string {
-  try {
-    const epochInSeconds = epoch.toString().length > 10 ? epoch / 1000 : epoch;
-
-    const date = fromUnixTime(epochInSeconds);
-
-    return format(date, "d, MMMM 'of' yyyy", { locale: enUS });
-  } catch (error) {
-    return "Invalid Date";
-  }
-}
 
 interface DataEntry {
   attester: string;
@@ -56,19 +43,20 @@ export default function Events() {
 
   const attester = signer?.address || "";
   const [result] = useQuery({
-    query: USER_ATTESTATIONS_QUERY,
-    variables: { attester },
+    query: EVENTS_ATTESTATIONS_QUERY,
+    variables: { schemaId: CREATE_EVENT_SCHEMA_UID },
     context: useMemo(() => ({ url: API_URL_MAPPING[chainId] }), [chainId]),
     pause: !signer,
   });
 
-  const { data, fetching, error } = result;
+  const { data } = result;
 
   const attestationList = useMemo(
     () =>
       data?.attestations &&
       sortByStartsAt(data.attestations).map((attestation) => (
         <AttestationItem
+          id={attestation.id}
           key={attestation.id}
           data={attestation.decodedDataJson}
         />
@@ -85,7 +73,7 @@ export default function Events() {
   }
 
   return (
-    <>
+    <div className="mx-20">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold my-12 text-center">
         Explore Your Next Event
       </h1>
@@ -98,39 +86,8 @@ export default function Events() {
         />
       </form>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-10 w-full gap-y-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
         {attestationList}
-      </div>
-    </>
-  );
-}
-
-function AttestationItem({ data }: { data: any }) {
-  const parsedData = parseEventsData(data);
-
-  return (
-    <div
-      key="Event"
-      className="border-2 rounded-lg w-60 h-45 gap-6 justify-self-center"
-    >
-      <div className="p-3">
-        <h2 className="text-base font-bold">{parsedData.name}</h2>
-        <p className="text-xs">{epochToCustomDate(parsedData.startsAt)}</p>
-      </div>
-      <div>
-        <img
-          className="w-full h-auto"
-          alt="Template image"
-          src={parsedData.imageUrl}
-        />
-      </div>
-      <div className="p-3">
-        <p className="text-xs text-gray-700 mb-4">
-          Brief description: {parsedData.briefDescription}
-        </p>
-        <span className="text-xs bg-gray-100 px-2 py-1 rounded-lg inline-block">
-          Status: published
-        </span>
       </div>
     </div>
   );
