@@ -79,3 +79,20 @@ export const TICKET_BY_RECIPIENT_QUERY = gql(`
     }
   }
     `);
+
+export const GET_TICKET_ATTESTATION_BY_EVENT_ID_QUERY = gql(`
+    query GetAttestationsByIDs($ids: [String!]!) {
+      attestations(where: { id: { in: $ids } }) {
+        id
+        attester
+        recipient
+        refUID
+        revocable
+        revocationTime
+        expirationTime
+        data
+        decodedDataJson
+        timeCreated
+      }
+    }
+    `);
