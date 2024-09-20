@@ -1,28 +1,12 @@
 "use client";
+import { AttestationItem } from "@/components/AttestationItem";
+import { CREATE_EVENT_SCHEMA_UID } from "@/components/CreateEventSchemaButton";
 import { useSigner } from "@/hooks/useSigner";
-import { API_URL_MAPPING, EVENT_SCHEMA_ID } from "@/lib/gqlEasAttestation";
+import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
-import { format, fromUnixTime } from "date-fns";
-import { enUS } from "date-fns/locale";
-import Link from "next/link";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
-import { parseEventsData } from "./parseEventsData";
-
-const BackupImage = "https://via.placeholder.com/150";
-
-function epochToCustomDate(epoch: number): string {
-  try {
-    const epochInSeconds = epoch.toString().length > 10 ? epoch / 1000 : epoch;
-
-    const date = fromUnixTime(epochInSeconds);
-
-    return format(date, "d, MMMM 'of' yyyy", { locale: enUS });
-  } catch (error) {
-    return "Invalid Date";
-  }
-}
 
 interface DataEntry {
   attester: string;
@@ -65,7 +49,7 @@ export default function Events() {
     pause: !signer,
   });
 
-  const { data, fetching, error } = result;
+  const { data } = result;
 
   const attestationList = useMemo(
     () =>
@@ -96,39 +80,5 @@ export default function Events() {
         {attestationList}
       </div>
     </div>
-  );
-}
-
-export function AttestationItem({ id, data }: { id: string; data: any }) {
-  const parsedData = parseEventsData(data);
-
-  return (
-    <Link
-      href={`/event/${id}`}
-      className="border-2 rounded-lg w-60 hover:border-slate-600"
-    >
-      <div className="p-3">
-        <h1 className="text-base font-bold">{parsedData.name}</h1>
-        <h2 className="text-xs">{epochToCustomDate(parsedData.startsAt)}</h2>
-      </div>
-      <div>
-        <img
-          className="w-full h-auto"
-          alt="Template image"
-          src={parsedData.imageUrl}
-          onError={(e) => {
-            e.currentTarget.src = BackupImage;
-          }}
-        />
-      </div>
-      <div className="p-3">
-        <h2 className="text-xs text-gray-700 mb-4 truncate">
-          Brief description: {parsedData.briefDescription}
-        </h2>
-        <h2 className="text-xs text-gray-700 mb-4 truncate">
-          Full description: {parsedData.fullDescription}
-        </h2>
-      </div>
-    </Link>
   );
 }
