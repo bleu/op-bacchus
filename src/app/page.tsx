@@ -41,7 +41,6 @@ export default function Events() {
 
   const chainId = useChainId();
 
-  const attester = signer?.address || "";
   const [result] = useQuery({
     query: EVENTS_ATTESTATIONS_QUERY,
     variables: { schemaId: CREATE_EVENT_SCHEMA_UID },

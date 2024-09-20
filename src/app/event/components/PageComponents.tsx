@@ -67,23 +67,23 @@ export const OtherInfoSection = ({
             <TabsTrigger value="about" className={tabTriggerClassName}>
               About
             </TabsTrigger>
-            {userIsEventOwner ? (
+            {userIsEventOwner && (
               <TabsTrigger value="tickets" className={tabTriggerClassName}>
                 Tickets
               </TabsTrigger>
-            ) : undefined}
-            {userHasTicket ? (
+            )}
+            {userHasTicket && (
               <TabsTrigger value="myTicket" className={tabTriggerClassName}>
                 My Ticket
               </TabsTrigger>
-            ) : undefined}
+            )}
           </TabsList>
-          {userIsEventOwner ? <Modal eventId={eventId} /> : undefined}
+          {userIsEventOwner && <Modal eventId={eventId} />}
         </OtherInfoHeaderContainer>
         <TabsContent value="about">
           <span>Description</span>: {eventData!.fullDescription}
         </TabsContent>
-        {userIsEventOwner ? (
+        {userIsEventOwner && (
           <TabsContent value="tickets">
             <div className="block mt-4">
               {ticketAddresses.map((address) => {
@@ -91,14 +91,14 @@ export const OtherInfoSection = ({
               })}
             </div>
           </TabsContent>
-        ) : undefined}
-        {userHasTicket ? (
+        )}
+        {userHasTicket && (
           <TabsContent value="myTicket">
             <div className="w-full flex items-center justify-center">
               <UserTicket eventData={eventData} userTicket={userTicket} />
             </div>
           </TabsContent>
-        ) : undefined}
+        )}
       </Tabs>
     </OtherInfoContainer>
   );
