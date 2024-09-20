@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 interface DataEntry {
   attester: string;
@@ -63,16 +64,24 @@ export default function Events() {
             />
           ))
         : [],
-    [data?.attestations],
+    [data?.attestations]
   );
-  
 
   if (!signer && !fetching) {
-    return <div className="flex items-center justify-center h-screen -mt-36">Connect a wallet to view your attestations.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 h-screen -mt-36">
+        Connect a wallet to view your attestations.
+        <ConnectButton />
+      </div>
+    );
   }
 
   if (fetching) {
-    return <div className="flex items-center justify-center h-screen -mt-36"><LoadingIndicator /></div>;
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   }
 
   return (
