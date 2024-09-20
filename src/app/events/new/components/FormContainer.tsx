@@ -31,7 +31,7 @@ export function FormContainer({
 }: {
   isContinueEnabled: boolean;
   handleContinue: () => void;
-  step: number
+  step: number;
   children: ReactNode;
 }) {
   return (
