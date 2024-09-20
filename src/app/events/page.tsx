@@ -1,8 +1,10 @@
 "use client";
 
 import { AttestationItem } from "@/components/AttestationItem";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import type { DataEntry } from "@/hooks/useAllEventsData";
 import { useHostedEventsData } from "@/hooks/useHostedEventsData";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import type React from "react";
 import { useMemo, useState } from "react";
@@ -10,7 +12,7 @@ import { parseEventsData } from "./parseEventsData";
 
 export default function MyEvents() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { hostedEventsData, signer } = useHostedEventsData();
+  const { hostedEventsData, signer, fetching } = useHostedEventsData();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -39,12 +41,21 @@ export default function MyEvents() {
     [filteredAttestations],
   );
 
-  if (!signer) {
-    return <div>Connect a wallet to view your attestations.</div>;
+  if (!signer && !fetching) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 h-screen -mt-36">
+        Connect a wallet to view your attestations.
+        <ConnectButton />
+      </div>
+    );
   }
 
-  if (!hostedEventsData) {
-    return <div>Loading attestation data...</div>;
+  if (fetching) {
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   }
 
   return (

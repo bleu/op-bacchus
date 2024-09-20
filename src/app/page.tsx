@@ -1,7 +1,9 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useAllEventsData } from "@/hooks/useAllEventsData";
 import type { DataEntry } from "@/hooks/useHostedEventsData";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useMemo, useState } from "react";
 import { parseEventsData } from "./events/parseEventsData";
 
@@ -38,11 +40,20 @@ export default function AllEvents() {
   );
 
   if (!signer) {
-    return <div>Connect a wallet to view your attestations.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 h-screen -mt-36">
+        Connect a wallet to view your attestations.
+        <ConnectButton />
+      </div>
+    );
   }
 
   if (!allEventsData) {
-    return <div>Loading attestation data...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   }
 
   return (
