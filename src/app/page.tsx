@@ -1,25 +1,42 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   type DataEntry,
   useAllEventsData,
 } from "./event/hooks/useAllEventsData";
+import { parseEventsData } from "./events/parseEventsData";
 
-export default function Events() {
+export default function AllEvents() {
+  const [searchTerm, setSearchTerm] = useState("");
   const { allEventsData, signer } = useAllEventsData();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredAttestations = useMemo(() => {
+    if (!allEventsData) return [];
+    return allEventsData.filter((attestation: DataEntry) => {
+      const parsedData = parseEventsData(attestation.decodedDataJson);
+      const searchableText =
+        `${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
+      const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+      return matchesSearch;
+    });
+  }, [allEventsData, searchTerm]);
 
   const attestationList = useMemo(
     () =>
-      allEventsData &&
-      allEventsData.map((attestation: DataEntry) => (
+      filteredAttestations &&
+      filteredAttestations.map((attestation: DataEntry) => (
         <AttestationItem
           id={attestation.id}
           key={attestation.id}
           data={attestation.decodedDataJson}
         />
       )),
-    [allEventsData],
+    [filteredAttestations],
   );
 
   if (!signer) {
@@ -41,6 +58,8 @@ export default function Events() {
           className="w-[50vw] h-12 mb-8 pl-2 border-2 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
           placeholder="Search"
           type="text"
+          value={searchTerm}
+          onChange={handleSearch}
         />
       </form>
 
