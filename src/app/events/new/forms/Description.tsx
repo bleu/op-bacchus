@@ -43,7 +43,11 @@ export function Description() {
   };
 
   return (
-    <FormContainer isContinueEnabled={true} handleContinue={submitForm} step={2}>
+    <FormContainer
+      isContinueEnabled={true}
+      handleContinue={submitForm}
+      step={2}
+    >
       <form className="block w-full" onSubmit={handleSubmit(submitForm)}>
         <h2 className="text-4xl text-bold mb-16">+ Create New Event</h2>
         <FormField
