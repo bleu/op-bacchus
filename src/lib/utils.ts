@@ -1,3 +1,4 @@
+import type { DataEntry } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { format, fromUnixTime } from "date-fns";
 import { enUS } from "date-fns/locale";
@@ -17,4 +18,20 @@ export function epochToCustomDate(epoch: number): string {
   } catch (error) {
     return "Invalid Date";
   }
+}
+
+export function sortByStartsAt(data: DataEntry[]): DataEntry[] {
+  return data.sort((a, b) => {
+    const aDecoded = JSON.parse(a.decodedDataJson);
+    const bDecoded = JSON.parse(b.decodedDataJson);
+
+    const aStartsAt = aDecoded.find((item: any) => item.name === "startsAt")
+      ?.value.value.hex;
+    const bStartsAt = bDecoded.find((item: any) => item.name === "startsAt")
+      ?.value.value.hex;
+
+    if (!aStartsAt || !bStartsAt) return 0;
+
+    return Number.parseInt(aStartsAt, 16) - Number.parseInt(bStartsAt, 16);
+  });
 }
