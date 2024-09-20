@@ -34,7 +34,7 @@ function sortByStartsAt(data: DataEntry[]): DataEntry[] {
   });
 }
 
-export const useOwnedEventsData = () => {
+export const useHostedEventsData = () => {
   const signer = useSigner();
 
   const attester = signer?.address || "";
@@ -50,10 +50,10 @@ export const useOwnedEventsData = () => {
 
   const { data, fetching, error } = result;
 
-  const ownedEventsData = useMemo(
+  const hostedEventsData = useMemo(
     () => data?.attestations && sortByStartsAt(data?.attestations),
     [data?.attestations],
   );
 
-  return { ownedEventsData, fetching, error, signer };
+  return { hostedEventsData, fetching, error, signer };
 };

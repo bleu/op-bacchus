@@ -1,5 +1,7 @@
 "use client";
 
+import { useEventData } from "@/hooks/useEventData";
+import { useTicketAddresses } from "@/hooks/useTicketAddresses";
 import { format } from "date-fns";
 import { Calendar } from "lucide-react";
 import type { Address } from "viem";
@@ -9,8 +11,6 @@ import {
   OtherInfoSection,
   StatusFlag,
 } from "../components/PageComponents";
-import { useEventData } from "../hooks/useEventData";
-import { useTicketAddresses } from "../hooks/useTicketAddresses";
 
 export default function Page({ params }: { params: { id: string } }) {
   const eventId = params.id;

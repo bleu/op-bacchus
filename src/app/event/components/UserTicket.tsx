@@ -1,8 +1,8 @@
+import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import type { Event } from "@/hooks/useCreateEventAttestation";
 import clsx from "clsx";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import QRCode from "react-qr-code";
-import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 
 export type TicketInfoType =
   | {

@@ -1,31 +1,31 @@
 "use client";
 
 import { AttestationItem } from "@/components/AttestationItem";
+import type { DataEntry } from "@/hooks/useAllEventsData";
+import { useHostedEventsData } from "@/hooks/useHostedEventsData";
 import Link from "next/link";
 import type React from "react";
 import { useMemo, useState } from "react";
-import type { DataEntry } from "../event/hooks/useAllEventsData";
-import { useOwnedEventsData } from "../event/hooks/useOwnedEventsData";
 import { parseEventsData } from "./parseEventsData";
 
 export default function MyEvents() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { ownedEventsData, signer } = useOwnedEventsData();
+  const { hostedEventsData, signer } = useHostedEventsData();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredAttestations = useMemo(() => {
-    if (!ownedEventsData) return [];
-    return ownedEventsData.filter((attestation: DataEntry) => {
+    if (!hostedEventsData) return [];
+    return hostedEventsData.filter((attestation: DataEntry) => {
       const parsedData = parseEventsData(attestation.decodedDataJson);
       const searchableText =
         `${parsedData.name} ${parsedData.briefDescription}`.toLowerCase();
       const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
       return matchesSearch;
     });
-  }, [ownedEventsData, searchTerm]);
+  }, [hostedEventsData, searchTerm]);
 
   const attestationList = useMemo(
     () =>
@@ -43,7 +43,7 @@ export default function MyEvents() {
     return <div>Connect a wallet to view your attestations.</div>;
   }
 
-  if (!ownedEventsData) {
+  if (!hostedEventsData) {
     return <div>Loading attestation data...</div>;
   }
 

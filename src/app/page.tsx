@@ -1,10 +1,8 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
+import { useAllEventsData } from "@/hooks/useAllEventsData";
+import type { DataEntry } from "@/hooks/useHostedEventsData";
 import { useMemo, useState } from "react";
-import {
-  type DataEntry,
-  useAllEventsData,
-} from "./event/hooks/useAllEventsData";
 import { parseEventsData } from "./events/parseEventsData";
 
 export default function AllEvents() {
