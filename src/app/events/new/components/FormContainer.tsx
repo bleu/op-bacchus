@@ -26,10 +26,12 @@ function ContinueButton({
 export function FormContainer({
   isContinueEnabled,
   handleContinue,
+  step,
   children,
 }: {
   isContinueEnabled: boolean;
   handleContinue: () => void;
+  step: number;
   children: ReactNode;
 }) {
   return (
@@ -37,7 +39,7 @@ export function FormContainer({
       {children}
       <div className="w-full flex justify-between items-center">
         <div className="w-2/6" />
-        <div className="flex justify-center items-center">Progress Bar</div>
+        <div className="flex justify-center items-center">{step}/2</div>
         <div className="flex w-2/6 justify-end">
           <ContinueButton
             isContinueEnabled={isContinueEnabled}

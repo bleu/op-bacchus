@@ -121,7 +121,11 @@ export function Overview() {
   };
 
   return (
-    <FormContainer isContinueEnabled={true} handleContinue={submitForm}>
+    <FormContainer
+      isContinueEnabled={true}
+      handleContinue={submitForm}
+      step={1}
+    >
       <form className="block w-full" onSubmit={handleSubmit(submitForm)}>
         <h2 className="text-4xl text-bold mb-16">+ Create New Event</h2>
         <div className="flex items-center justify-between">

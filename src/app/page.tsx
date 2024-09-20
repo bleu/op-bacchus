@@ -1,9 +1,11 @@
 "use client";
 import { AttestationItem } from "@/components/AttestationItem";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { CREATE_EVENT_SCHEMA_UID } from "@/hooks/useCreateEventAttestation";
 import { useSigner } from "@/hooks/useSigner";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { EVENTS_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
@@ -60,15 +62,24 @@ export default function Events() {
           data={attestation.decodedDataJson}
         />
       )),
-    [data?.attestations],
+    [data?.attestations]
   );
 
   if (!signer) {
-    return <div>Connect a wallet to view your attestations.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 h-screen -mt-36">
+        Connect a wallet to view your attestations.
+        <ConnectButton />
+      </div>
+    );
   }
 
   if (!data) {
-    return <div>Loading attestation data...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   }
 
   return (

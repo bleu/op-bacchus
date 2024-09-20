@@ -7,6 +7,8 @@ import { USER_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
+import { LoadingIndicator } from "@/components/LoadingIndicator";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 interface DataEntry {
   attester: string;
@@ -49,7 +51,7 @@ export default function Events() {
     pause: !signer,
   });
 
-  const { data } = result;
+  const { data, fetching } = result;
 
   const attestationList = useMemo(
     () =>
@@ -62,15 +64,24 @@ export default function Events() {
             />
           ))
         : [],
-    [data?.attestations],
+    [data?.attestations]
   );
 
-  if (!signer) {
-    return <div>Connect a wallet to view your attestations.</div>;
+  if (!signer && !fetching) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 h-screen -mt-36">
+        Connect a wallet to view your attestations.
+        <ConnectButton />
+      </div>
+    );
   }
 
-  if (!data) {
-    return <div>Loading attestation data...</div>;
+  if (fetching) {
+    return (
+      <div className="flex items-center justify-center h-screen -mt-36">
+        <LoadingIndicator />
+      </div>
+    );
   }
 
   return (
