@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { MaterialSymbol } from "react-material-symbols";
+import { NotebookPenIcon } from "lucide-react";
 
 export const AssignTicketText = () => {
   return (
-    <div className="flex justify-center items-center w-fit">
-      <MaterialSymbol icon="assignment_ind" size={24} />
+    <div className="flex justify-center items-center w-fit gap-x-1">
+      <NotebookPenIcon size={16} />
       <span>Assign Ticket</span>
     </div>
   );
