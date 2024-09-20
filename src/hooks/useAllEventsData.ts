@@ -2,21 +2,10 @@ import { CREATE_EVENT_SCHEMA_UID } from "@/hooks/useCreateEventAttestation";
 import { useSigner } from "@/hooks/useSigner";
 import { API_URL_MAPPING } from "@/lib/gqlEasAttestation";
 import { EVENTS_ATTESTATIONS_QUERY } from "@/lib/gqlEasAttestation/query";
+import type { DataEntry } from "@/types";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 import { useChainId } from "wagmi";
-
-export interface DataEntry {
-  attester: string;
-  data: string;
-  decodedDataJson: string;
-  expirationTime: number;
-  id: string;
-  recipient: string;
-  refUID: string;
-  revocable: boolean;
-  revocationTime: number;
-}
 
 function sortByStartsAt(data: DataEntry[]): DataEntry[] {
   return data.sort((a, b) => {

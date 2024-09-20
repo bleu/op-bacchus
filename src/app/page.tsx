@@ -2,7 +2,7 @@
 import { AttestationItem } from "@/components/AttestationItem";
 import { LoadingIndicator } from "@/components/LoadingIndicator";
 import { useAllEventsData } from "@/hooks/useAllEventsData";
-import type { DataEntry } from "@/hooks/useHostedEventsData";
+import type { DataEntry } from "@/types";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useMemo, useState } from "react";
 import { parseEventsData } from "./events/parseEventsData";
